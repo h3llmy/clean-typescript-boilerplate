@@ -11,9 +11,9 @@ class AuthRoute extends Route {
   }
 
   protected initializeRoutes() {
-    this.post(
+    this.get(
       "/register",
-      this.withFile(),
+      // this.withFile(),
       this.permission(["admin"]),
       this.controller.register
     );

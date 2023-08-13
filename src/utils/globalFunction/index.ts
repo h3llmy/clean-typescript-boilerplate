@@ -6,12 +6,14 @@ import {
   Router,
 } from "express";
 import "./env/env";
+import "./asset/asset";
 import "./httpError/httpError";
 import IUsers from "../../domains/users/interface";
 import { UploadedFile } from "express-fileupload";
 
 declare global {
   function env(name: string, optional?: any): string;
+  function asset(path: string): string;
   interface IRequest extends Request {
     user: IUsers;
     files?: { [formField: string]: IUploadedFile | IUploadedFile[] };
@@ -22,7 +24,6 @@ declare global {
   }
   interface IUploadedFile extends UploadedFile {
     filePath: string;
-    url: string;
     mime: string;
   }
   interface IResponse extends Response {}

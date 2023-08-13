@@ -35,6 +35,7 @@ class App {
   private startServer(port: number) {
     this.app
       .listen(port, () => {
+        process.env.port = `${port}`;
         console.log("\x1b[34m%s\x1b[0m", `App listening on the port ${port}`);
       })
       .on("error", (error) => {
@@ -82,6 +83,12 @@ class App {
     this.app.use(compression());
     this.app.use(fileUpload(), new FileUpload().initFile);
     this.app.use(express.static(publicDirectory.directory));
+    this.app.use((req: IRequest, res: IResponse, next: INext) => {
+      process.env.asset = env("NODE_ENV", "development")
+        ? `${req.protocol}://${req.hostname}:${env("port")}`
+        : `${req.protocol}://${req.hostname}`;
+      next();
+    });
     this.app.use(
       helmet({
         crossOriginResourcePolicy: { policy: "cross-origin" },

@@ -18,12 +18,11 @@ class Route implements IRouter {
     permissions: UserStatus | UserStatus[] | "authenticated"
   ): IRequestHandler {
     return (req: IRequest, res: IResponse, next: INext) => {
-      if (permissions === "authenticated" && !req.user) {
-        throw Exception.forbidden();
-      } else if (
-        req.user &&
-        !req.user[authConfig.permissionField] &&
-        !permissions.includes(req.user[authConfig.permissionField])
+      if (
+        !req.user ||
+        (permissions === "authenticated" && !req.user) ||
+        (!req.user[authConfig.permissionField] &&
+          !permissions.includes(req.user[authConfig.permissionField]))
       ) {
         throw Exception.forbidden();
       }

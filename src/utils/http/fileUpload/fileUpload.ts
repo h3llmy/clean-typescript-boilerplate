@@ -13,12 +13,8 @@ class FileUpload {
           const mime = file.mimetype.split("/")[0];
           file.name = `${Date.now()}-${file.name}`;
           const filePath = `${mime}/${file.name}`;
-          const url = env("NODE_ENV", "development")
-            ? `${req.protocol}://${req.hostname}:${env("port")}/${filePath}`
-            : `${req.protocol}://${req.hostname}/${filePath}`;
 
           file.filePath = filePath;
-          file.url = url;
           file.mime = mime;
         });
 
