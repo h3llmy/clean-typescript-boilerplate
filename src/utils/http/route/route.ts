@@ -2,6 +2,7 @@ import authConfig from "../../../config/auth";
 import { routeMiddlewares } from "../../../app/kernel";
 import { Router } from "express";
 import { UserStatus } from "../../../domains/users/interface";
+import FileUpload from "../fileUpload/fileUpload";
 
 type Middleware = keyof typeof routeMiddlewares;
 
@@ -13,9 +14,13 @@ class Route implements IRouter {
     this.routeMiddleware = routeMiddlewares;
   }
 
-  public permission(permissions: UserStatus | UserStatus[]): IRequestHandler {
+  public permission(
+    permissions: UserStatus | UserStatus[] | "authenticated"
+  ): IRequestHandler {
     return (req: IRequest, res: IResponse, next: INext) => {
-      if (
+      if (permissions === "authenticated" && !req.user) {
+        throw Exception.forbidden();
+      } else if (
         req.user &&
         !req.user[authConfig.permissionField] &&
         !permissions.includes(req.user[authConfig.permissionField])
@@ -35,6 +40,10 @@ class Route implements IRouter {
     } else {
       return routeMiddlewares[middlewareName];
     }
+  }
+
+  public withFile(): IRequestHandler {
+    return new FileUpload().saveFile;
   }
 
   public get(

@@ -3,7 +3,7 @@ class ErrorHandler {
     const status = err.statusCode || 500;
     const message = err.message || "Something went wrong";
     const path = err.path;
-    if (env("NODE_ENV", "development") === "development") {
+    if (env("NODE_ENV", "development") !== "production") {
       console.log(err);
     }
     res.status(status).json({

@@ -1,5 +1,5 @@
 import IUsers from "domains/users/interface";
-import { decodeToken } from "../services/authToken/jwt";
+import AuthToken from "../services/authToken/jwt";
 
 class AuthMiddleware {
   static auth(req: IRequest, res: IResponse, next: INext) {
@@ -10,7 +10,7 @@ class AuthMiddleware {
         next();
       } else if (authorization && authorization.startsWith("Bearer")) {
         const token = authorization.split(" ")[1];
-        const decodedToken = decodeToken(token);
+        const decodedToken = AuthToken.decode(token);
         if (!decodedToken) {
           throw Exception.unauthorized();
         }
@@ -22,13 +22,6 @@ class AuthMiddleware {
     } catch (error) {
       throw Exception.unauthorized();
     }
-  }
-
-  static isLogin(req: IRequest, res: IResponse, next: INext) {
-    if (req.user) {
-      next();
-    }
-    throw Exception.unauthorized();
   }
 }
 

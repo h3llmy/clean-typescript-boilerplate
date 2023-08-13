@@ -11,8 +11,8 @@ class UserRoute extends Route {
   }
 
   protected initializeRoutes() {
-    this.get("/", this.middleware("isLogin"), this.controller.detail);
-    this.put("/", this.middleware("isLogin"), this.controller.update);
+    this.get("/", this.permission("authenticated"), this.controller.detail);
+    this.put("/", this.permission("authenticated"), this.controller.update);
     this.get("/list", this.permission("admin"), this.controller.list);
   }
 }

@@ -7,6 +7,9 @@ import ConnectMongoDB from "../utils/database/connection";
 import * as compression from "compression";
 import helmet from "helmet";
 import * as cors from "cors";
+import * as fileUpload from "express-fileupload";
+import FileUpload from "../utils/http/fileUpload/fileUpload";
+import publicDirectory from "../config/publicDirectory";
 
 class App {
   private app: express.Application;
@@ -25,10 +28,23 @@ class App {
   }
 
   public listen() {
-    const port = env("port", 3000);
-    this.app.listen(port, () => {
-      console.log("\x1b[34m%s\x1b[0m", `App listening on the port ${port}`);
-    });
+    let port = Number(env("port", 3000));
+    this.startServer(port);
+  }
+
+  private startServer(port: number) {
+    this.app
+      .listen(port, () => {
+        console.log("\x1b[34m%s\x1b[0m", `App listening on the port ${port}`);
+      })
+      .on("error", (error) => {
+        if ((error as any).code === "EADDRINUSE") {
+          port++;
+          this.startServer(port);
+        } else {
+          console.error("Error starting server:", error);
+        }
+      });
   }
 
   private corsOrigin() {
@@ -64,6 +80,8 @@ class App {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
     this.app.use(compression());
+    this.app.use(fileUpload(), new FileUpload().initFile);
+    this.app.use(express.static(publicDirectory.directory));
     this.app.use(
       helmet({
         crossOriginResourcePolicy: { policy: "cross-origin" },
@@ -90,22 +108,8 @@ class App {
     this.app.use(ErrorHandler.handler);
   }
 
-  private async connectDb() {
-    try {
-      const mongoose = await ConnectMongoDB.createConnection();
-      console.log(
-        "\x1b[34m%s\x1b[0m",
-        `MongoDB connected: ${mongoose.connection.host}`
-      );
-    } catch (error) {
-      console.error(error);
-      let timer: number = 5000;
-      console.error("reconnect to MongoDB");
-      setTimeout(() => {
-        ConnectMongoDB.createConnection();
-        timer += 5000;
-      }, timer);
-    }
+  private connectDb() {
+    ConnectMongoDB.createConnection();
   }
 }
 

@@ -1,15 +1,15 @@
-import rateLimiter from "../middlewares/rateLimiter";
+import RateLimiterMiddleware from "../middlewares/rateLimiter";
 import AuthMiddleware from "../middlewares/auth";
-import loger from "../middlewares/loger";
+import LogerMiddleware from "../middlewares/loger";
 import * as ExpressMongoSanitize from "express-mongo-sanitize";
 
+// implement middeleware to all route
 export const middlewares: IRequestHandler[] = [
-  loger,
+  LogerMiddleware.loger(),
   AuthMiddleware.auth,
-  rateLimiter,
+  RateLimiterMiddleware.rateLimiter(),
   ExpressMongoSanitize(),
 ];
 
-export const routeMiddlewares = {
-  isLogin: AuthMiddleware.isLogin,
-} satisfies Record<string, IRequestHandler>;
+// implement middleware to spesific route use this.middleware("{middleware name}") to use it in the controller
+export const routeMiddlewares = {} satisfies Record<string, IRequestHandler>;

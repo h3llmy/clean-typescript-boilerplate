@@ -9,10 +9,18 @@ class ConnectMongoDB {
         useNewUrlParser: true,
       } as ConnectOptions);
 
-      return conn;
+      console.log(
+        "\x1b[34m%s\x1b[0m",
+        `MongoDB connected: ${mongoose.connection.host}`
+      );
     } catch (error) {
       console.error("\x1b[31m%s\x1b[0m", `Error: ${error.message}`);
-      process.exit(1);
+      let timer: number = 5000;
+      setTimeout(() => {
+        console.info("reconnect to MongoDB");
+        this.createConnection();
+        timer += 5000;
+      }, timer);
     }
   }
 }

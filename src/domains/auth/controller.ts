@@ -1,4 +1,4 @@
-import { encodeToken } from "../../services/authToken/jwt";
+import AuthToken from "../../services/authToken/jwt";
 
 class AuthController {
   public register(req: IRequest, res: IResponse) {
