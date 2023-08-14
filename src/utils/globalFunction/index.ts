@@ -12,7 +12,7 @@ import IUsers from "../../domains/users/interface";
 import { UploadedFile } from "express-fileupload";
 
 declare global {
-  function env(name: string, optional?: any): string;
+  function env(name: string, optionalValue?: any): string;
   function asset(path: string): string;
   interface IRequest extends Request {
     user: IUsers;
