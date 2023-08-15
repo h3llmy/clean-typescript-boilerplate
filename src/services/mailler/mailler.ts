@@ -26,7 +26,7 @@ class Mail {
     };
   }
 
-  public to(email: string): this {
+  public to(email: string | string[]): this {
     this.emailOptions.to = email;
     return this;
   }
@@ -43,14 +43,18 @@ class Mail {
 
   public text(text: string): Promise<boolean> {
     this.emailOptions.text = text;
-    console.log(this.emailOptions);
-
     return this.send();
   }
 
   private async send(): Promise<boolean> {
     try {
-      await this.transporter.sendMail(this.emailOptions);
+      if (Array.isArray(this.emailOptions.to)) {
+        this.emailOptions.to.forEach((emailTo: string) => {
+          this.transporter.sendMail(emailTo);
+        });
+      } else {
+        await this.transporter.sendMail(this.emailOptions);
+      }
       return true;
     } catch (error) {
       console.error("Error sending email:", error);

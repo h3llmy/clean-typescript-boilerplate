@@ -41,8 +41,8 @@ class Route implements IRouter {
     }
   }
 
-  public withFile(): IRequestHandler {
-    return new FileUpload().saveFile;
+  public withFile(): IRequestHandler[] {
+    return [new FileUpload().initFile, new FileUpload().saveFile];
   }
 
   public get(
