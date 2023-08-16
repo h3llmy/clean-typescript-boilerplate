@@ -8,7 +8,7 @@ import {
 import "./env/env";
 import "./asset/asset";
 import "./httpError/httpError";
-import IUsers from "../../domains/users/interface";
+import IUsers from "../../domains/users/interface/interface";
 import { UploadedFile } from "express-fileupload";
 
 declare global {

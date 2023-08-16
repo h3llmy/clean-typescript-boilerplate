@@ -1,4 +1,4 @@
-import IUsers from "domains/users/interface";
+import IUsers from "domains/users/interface/interface";
 
 export default {
   permissionField: "status",

@@ -1,5 +1,5 @@
-import AuthController from "./controller";
-import Route from "../../utils/http/route/route";
+import AuthController from "../controller/controller";
+import Route from "../../../utils/http/route/route";
 
 class AuthRoute extends Route {
   protected controller = new AuthController();

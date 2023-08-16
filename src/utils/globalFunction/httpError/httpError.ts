@@ -57,267 +57,267 @@ class Exception extends Error {
     Error.captureStackTrace(this, this.constructor);
   }
 
-  static badRequest(message?: string | any) {
+  static badRequest(message?: any) {
     return new Exception(
       message || "Bad Request",
       HttpExceptionStatusCode.BAD_REQUEST
     );
   }
 
-  static unauthorized(message?: string | any) {
+  static unauthorized(message?: any) {
     return new Exception(
       message || "Unauthorized",
       HttpExceptionStatusCode.UNAUTHORIZED
     );
   }
 
-  static paymentRequired(message?: string | any) {
+  static paymentRequired(message?: any) {
     return new Exception(
       message || "Payment Required",
       HttpExceptionStatusCode.PAYMENT_REQUIRED
     );
   }
 
-  static forbidden(message?: string | any) {
+  static forbidden(message?: any) {
     return new Exception(
       message || "Forbidden",
       HttpExceptionStatusCode.FORBIDDEN
     );
   }
 
-  static notFound(message?: string | any) {
+  static notFound(message?: any) {
     return new Exception(
       message || "Page Not Found!",
       HttpExceptionStatusCode.NOT_FOUND
     );
   }
 
-  static methodNotAllowed(message?: string | any) {
+  static methodNotAllowed(message?: any) {
     return new Exception(
       message || "Method Not Allowed",
       HttpExceptionStatusCode.METHOD_NOT_ALLOWED
     );
   }
 
-  static notAcceptable(message?: string | any) {
+  static notAcceptable(message?: any) {
     return new Exception(
       message || "Not Acceptable",
       HttpExceptionStatusCode.NOT_ACCEPTABLE
     );
   }
 
-  static proxyAuthenticationRequired(message?: string | any) {
+  static proxyAuthenticationRequired(message?: any) {
     return new Exception(
       message || "Proxy Authentication Required",
       HttpExceptionStatusCode.PROXY_AUTHENTICATION_REQUIRED
     );
   }
 
-  static requestTimeout(message?: string | any) {
+  static requestTimeout(message?: any) {
     return new Exception(
       message || "Request Timeout",
       HttpExceptionStatusCode.REQUEST_TIMEOUT
     );
   }
 
-  static conflict(message?: string | any) {
+  static conflict(message?: any) {
     return new Exception(
       message || "Conflict",
       HttpExceptionStatusCode.CONFLICT
     );
   }
 
-  static gone(message?: string | any) {
+  static gone(message?: any) {
     return new Exception(message || "Gone", HttpExceptionStatusCode.GONE);
   }
 
-  static lengthRequired(message?: string | any) {
+  static lengthRequired(message?: any) {
     return new Exception(
       message || "Length Required",
       HttpExceptionStatusCode.LENGTH_REQUIRED
     );
   }
 
-  static preconditionFailed(message?: string | any) {
+  static preconditionFailed(message?: any) {
     return new Exception(
       message || "Precondition Failed",
       HttpExceptionStatusCode.PRECONDITION_FAILED
     );
   }
 
-  static payloadTooLarge(message?: string | any) {
+  static payloadTooLarge(message?: any) {
     return new Exception(
       message || "Payload Too Large",
       HttpExceptionStatusCode.PAYLOAD_TOO_LARGE
     );
   }
 
-  static uriTooLong(message?: string | any) {
+  static uriTooLong(message?: any) {
     return new Exception(
       message || "URI Too Long",
       HttpExceptionStatusCode.URI_TOO_LONG
     );
   }
 
-  static unsupportedMediaType(message?: string | any) {
+  static unsupportedMediaType(message?: any) {
     return new Exception(
       message || "Unsupported Media Type",
       HttpExceptionStatusCode.UNSUPPORTED_MEDIA_TYPE
     );
   }
 
-  static rangeNotSatisfiable(message?: string | any) {
+  static rangeNotSatisfiable(message?: any) {
     return new Exception(
       message || "Range Not Satisfiable",
       HttpExceptionStatusCode.RANGE_NOT_SATISFIABLE
     );
   }
 
-  static expectationFailed(message?: string | any) {
+  static expectationFailed(message?: any) {
     return new Exception(
       message || "Expectation Failed",
       HttpExceptionStatusCode.EXPECTATION_FAILED
     );
   }
 
-  static misdirectedRequest(message?: string | any) {
+  static misdirectedRequest(message?: any) {
     return new Exception(
       message || "Misdirected Request",
       HttpExceptionStatusCode.MISDIRECTED_REQUEST
     );
   }
 
-  static unprocessableEntity(message?: string | any) {
+  static unprocessableEntity(message?: any) {
     return new Exception(
       message || "Unprocessable Entity",
       HttpExceptionStatusCode.UNPROCESSABLE_ENTITY
     );
   }
 
-  static locked(message?: string | any) {
+  static locked(message?: any) {
     return new Exception(message || "Locked", HttpExceptionStatusCode.LOCKED);
   }
 
-  static failedDependency(message?: string | any) {
+  static failedDependency(message?: any) {
     return new Exception(
       message || "Failed Dependency",
       HttpExceptionStatusCode.FAILED_DEPENDENCY
     );
   }
 
-  static tooEarly(message?: string | any) {
+  static tooEarly(message?: any) {
     return new Exception(
       message || "Too Early",
       HttpExceptionStatusCode.TOO_EARLY
     );
   }
 
-  static upgradeRequired(message?: string | any) {
+  static upgradeRequired(message?: any) {
     return new Exception(
       message || "Upgrade Required",
       HttpExceptionStatusCode.UPGRADE_REQUIRED
     );
   }
 
-  static preconditionRequired(message?: string | any) {
+  static preconditionRequired(message?: any) {
     return new Exception(
       message || "Precondition Required",
       HttpExceptionStatusCode.PRECONDITION_REQUIRED
     );
   }
 
-  static tooManyRequests(message?: string | any) {
+  static tooManyRequests(message?: any) {
     return new Exception(
       message || "Too Many Requests",
       HttpExceptionStatusCode.TOO_MANY_REQUESTS
     );
   }
 
-  static requestHeaderFieldsTooLarge(message?: string | any) {
+  static requestHeaderFieldsTooLarge(message?: any) {
     return new Exception(
       message || "Request Header Fields Too Large",
       HttpExceptionStatusCode.REQUEST_HEADER_FIELDS_TOO_LARGE
     );
   }
 
-  static unavailableForLegalReasons(message?: string | any) {
+  static unavailableForLegalReasons(message?: any) {
     return new Exception(
       message || "Unavailable For Legal Reasons",
       HttpExceptionStatusCode.UNAVAILABLE_FOR_LEGAL_REASONS
     );
   }
 
-  static internalServerError(message?: string | any) {
+  static internalServerError(message?: any) {
     return new Exception(
       message || "Internal Server Error",
       HttpExceptionStatusCode.INTERNAL_SERVER_ERROR
     );
   }
 
-  static notImplemented(message?: string | any) {
+  static notImplemented(message?: any) {
     return new Exception(
       message || "Not Implemented",
       HttpExceptionStatusCode.NOT_IMPLEMENTED
     );
   }
 
-  static badGateway(message?: string | any) {
+  static badGateway(message?: any) {
     return new Exception(
       message || "Bad Gateway",
       HttpExceptionStatusCode.BAD_GATEWAY
     );
   }
 
-  static serviceUnavailable(message?: string | any) {
+  static serviceUnavailable(message?: any) {
     return new Exception(
       message || "Service Unavailable",
       HttpExceptionStatusCode.SERVICE_UNAVAILABLE
     );
   }
 
-  static gatewayTimeout(message?: string | any) {
+  static gatewayTimeout(message?: any) {
     return new Exception(
       message || "Gateway Timeout",
       HttpExceptionStatusCode.GATEWAY_TIMEOUT
     );
   }
 
-  static httpVersionNotSupported(message?: string | any) {
+  static httpVersionNotSupported(message?: any) {
     return new Exception(
       message || "HTTP Version Not Supported",
       HttpExceptionStatusCode.HTTP_VERSION_NOT_SUPPORTED
     );
   }
 
-  static variantAlsoNegotiates(message?: string | any) {
+  static variantAlsoNegotiates(message?: any) {
     return new Exception(
       message || "Variant Also Negotiates",
       HttpExceptionStatusCode.VARIANT_ALSO_NEGOTIATES
     );
   }
 
-  static insufficientStorage(message?: string | any) {
+  static insufficientStorage(message?: any) {
     return new Exception(
       message || "Insufficient Storage",
       HttpExceptionStatusCode.INSUFFICIENT_STORAGE
     );
   }
 
-  static loopDetected(message?: string | any) {
+  static loopDetected(message?: any) {
     return new Exception(
       message || "Loop Detected",
       HttpExceptionStatusCode.LOOP_DETECTED
     );
   }
 
-  static notExtended(message?: string | any) {
+  static notExtended(message?: any) {
     return new Exception(
       message || "Not Extended",
       HttpExceptionStatusCode.NOT_EXTENDED
     );
   }
 
-  static networkAuthenticationRequired(message?: string | any) {
+  static networkAuthenticationRequired(message?: any) {
     return new Exception(
       message || "Network Authentication Required",
       HttpExceptionStatusCode.NETWORK_AUTHENTICATION_REQUIRED

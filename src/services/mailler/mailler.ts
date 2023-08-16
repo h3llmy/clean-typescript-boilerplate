@@ -1,4 +1,5 @@
 import * as nodemailer from "nodemailer";
+import * as ejs from "ejs";
 
 class Mail {
   private transporter: nodemailer.Transporter;
@@ -36,9 +37,15 @@ class Mail {
     return this;
   }
 
-  public html(html: string): Promise<boolean> {
-    this.emailOptions.html = html;
-    return this.send();
+  public html(html: string, data?: any): Promise<boolean> {
+    try {
+      const htmlContent = ejs.renderFile(`./src/${html}`, data);
+      this.emailOptions.html = htmlContent;
+      return this.send();
+    } catch (error) {
+      console.error(error);
+      throw new Exception("Fail To Send Email", 500);
+    }
   }
 
   public text(text: string): Promise<boolean> {
@@ -57,8 +64,8 @@ class Mail {
       }
       return true;
     } catch (error) {
-      console.error("Error sending email:", error);
-      return false;
+      console.error(error);
+      throw new Exception("Fail To Send Email", 500);
     }
   }
 }

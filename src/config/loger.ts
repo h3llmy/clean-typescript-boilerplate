@@ -1,5 +1,3 @@
-import { Options } from "morgan";
-
 export default {
   path: "src/storage/app.log",
   format: [

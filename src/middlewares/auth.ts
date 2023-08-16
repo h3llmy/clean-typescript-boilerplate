@@ -1,4 +1,4 @@
-import IUsers from "domains/users/interface";
+import IUsers from "domains/users/interface/interface";
 import AuthToken from "../services/authToken/jwt";
 
 class AuthMiddleware {
@@ -8,7 +8,7 @@ class AuthMiddleware {
 
       if (!authorization) {
         next();
-      } else if (authorization && authorization.startsWith("Bearer")) {
+      } else if (authorization?.startsWith("Bearer")) {
         const token = authorization.split(" ")[1];
         const decodedToken = AuthToken.decode(token);
         if (!decodedToken) {

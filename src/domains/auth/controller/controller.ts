@@ -1,5 +1,4 @@
-import Mail from "../../services/mailler/mailler";
-import AuthToken from "../../services/authToken/jwt";
+import Mail from "../../../services/mailler/mailler";
 
 class AuthController {
   public register(req: IRequest, res: IResponse) {

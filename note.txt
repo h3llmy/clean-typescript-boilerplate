@@ -1,1 +1,23 @@
 view engine for nodemailer
+
+
+// RENDER EJS CODE
+const fs = require('fs');
+
+function renderEjsFile(templatePath, data) {
+  const template = fs.readFileSync(templatePath, 'utf-8');
+
+  // Replace <%= ... %> tags with evaluated JavaScript expressions
+  const renderedTemplate = template.replace(/<%=(.*?)%>/g, (_, expression) => {
+    return eval(expression.trim());
+  });
+
+  return renderedTemplate;
+}
+
+const data = {
+  name: 'John',
+};
+
+const renderedHtml = renderEjsFile('template.ejs', data);
+console.log(renderedHtml);

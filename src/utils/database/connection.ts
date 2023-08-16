@@ -4,7 +4,7 @@ class ConnectMongoDB {
   static async createConnection() {
     try {
       mongoose.set("strictQuery", false);
-      const conn = await mongoose.connect(env("MONGO_URI"), {
+      await mongoose.connect(env("MONGO_URI"), {
         useUnifiedTopology: true,
         useNewUrlParser: true,
       } as ConnectOptions);
