@@ -5,7 +5,7 @@ class AuthController {
     new Mail()
       .to("helmytrisna86@gmail.com")
       .subject("testing email")
-      .html("<h1>hello world!</h1>");
+      .html("./index.html", { name: ["aselole", "mantap", "joss"] });
 
     res.json({
       register: "(req.files.file as IUploadedFile).data,",

@@ -8,5 +8,10 @@
     alt=""
   />
   <input type="file" name="file" id="file" multiple />
-  <button type="submit">submit</button>
+  <button type="submit">
+    {{ props.name.map((a) => { return `
+    <div>${a}</div>
+    `; })}}
+  </button>
+  {{env('port')}}
 </form>

@@ -26,6 +26,9 @@ class App {
     return this.app;
   }
 
+  /**
+   * start the app server
+   */
   public listen() {
     let port = Number(env("port", 3000));
     this.startServer(port);

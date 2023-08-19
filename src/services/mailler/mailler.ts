@@ -1,5 +1,6 @@
 import * as nodemailer from "nodemailer";
 import * as ejs from "ejs";
+import * as fs from "fs";
 
 class Mail {
   private transporter: nodemailer.Transporter;
@@ -39,8 +40,18 @@ class Mail {
 
   public html(html: string, data?: any): Promise<boolean> {
     try {
-      const htmlContent = ejs.renderFile(`./src/${html}`, data);
-      this.emailOptions.html = htmlContent;
+      const template = fs.readFileSync(html, "utf-8");
+
+      const renderedTemplate = template.replace(
+        /{{(.*?)}}/g,
+        (_, expression) => {
+          return eval(expression.trim());
+        }
+      );
+      // const htmlContent = ejs.renderFile(`./src/${html}`, data);
+      this.emailOptions.html = renderedTemplate;
+      console.log(template);
+
       return this.send();
     } catch (error) {
       console.error(error);

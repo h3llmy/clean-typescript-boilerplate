@@ -12,6 +12,16 @@ import IUsers from "../../domains/users/interface/interface";
 import { UploadedFile } from "express-fileupload";
 
 declare global {
+  /**
+   * get env or give default value when env not found
+   *
+   * Example:
+   *
+   * env("PORT", 3000)
+   *
+   * that will return port from .env or when not foud that will return 3000
+   *
+   */
   function env(name: string, optionalValue?: any): string;
   function asset(path: string): string;
   interface IRequest extends Request {
