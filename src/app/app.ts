@@ -8,7 +8,7 @@ import * as compression from "compression";
 import helmet from "helmet";
 import * as cors from "cors";
 import * as fileUpload from "express-fileupload";
-import publicDirectory from "../config/publicDirectory";
+import publicDirectory from "../config/fileDirectory";
 
 class App {
   private app: express.Application;
@@ -20,17 +20,15 @@ class App {
     this.initializeMiddlewares();
     this.initializeControllers(routes);
     this.initializeErrorHandling();
+    this.listen();
   }
 
   public getServer() {
     return this.app;
   }
 
-  /**
-   * start the app server
-   */
-  public listen() {
-    let port = Number(env("port", 3000));
+  private listen() {
+    const port = parseInt(env("port", 3000));
     this.startServer(port);
   }
 

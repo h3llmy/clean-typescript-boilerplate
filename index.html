@@ -3,15 +3,10 @@
   method="post"
   enctype="multipart/form-data"
 >
-  <img
+  <!-- <img
     src="http://localhost:3000/image/1691934184341-144993-Raphtalia-Tate-no-Yuusha-no-Nariagari-humanoid.png"
     alt=""
-  />
+  /> -->
   <input type="file" name="file" id="file" multiple />
-  <button type="submit">
-    {{ props.name.map((a) => { return `
-    <div>${a}</div>
-    `; })}}
-  </button>
-  {{env('port')}}
+  <button type="submit">submit</button>
 </form>

@@ -1,8 +1,10 @@
 import AuthController from "../controller/controller";
 import Route from "../../../utils/http/route/route";
+import AuthValidator from "../validator/validator";
 
 class AuthRoute extends Route {
   protected controller = new AuthController();
+  protected validator = new AuthValidator();
   readonly prefix = "/auth";
 
   constructor() {
@@ -13,7 +15,8 @@ class AuthRoute extends Route {
   protected initializeRoutes() {
     this.get(
       "/register",
-      // this.withFile(),
+      this.validator.register(),
+      this.withFile(),
       // this.permission("authenticated"),
       this.controller.register
     );

@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import publicDirectory from "../../../config/publicDirectory";
+import fileDirectory from "../../../config/fileDirectory";
 
 class FileUpload {
   public initFile(req: IRequest, res: IResponse, next: INext) {
@@ -35,13 +35,13 @@ class FileUpload {
             : [req.files[fileKey] as IUploadedFile];
 
           uploadedFiles.forEach((file: IUploadedFile) => {
-            if (!fs.existsSync(`${publicDirectory.directory}/${file.mime}`)) {
-              fs.mkdirSync(`${publicDirectory.directory}/${file.mime}`, {
+            if (!fs.existsSync(`${fileDirectory.directory}/${file.mime}`)) {
+              fs.mkdirSync(`${fileDirectory.directory}/${file.mime}`, {
                 recursive: true,
               });
             }
 
-            file.mv(`${publicDirectory.directory}/${file.filePath}`);
+            file.mv(`${fileDirectory.directory}/${file.filePath}`);
           });
         });
       }
