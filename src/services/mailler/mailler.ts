@@ -40,17 +40,16 @@ class Mail {
 
   public html(html: string, data?: any): Promise<boolean> {
     try {
-      const template = fs.readFileSync(html, "utf-8");
+      // const template = fs.readFileSync(html, "utf-8");
 
-      const renderedTemplate = template.replace(
-        /{{(.*?)}}/g,
-        (_, expression) => {
-          return eval(expression.trim());
-        }
-      );
-      // const htmlContent = ejs.renderFile(`./src/${html}`, data);
-      this.emailOptions.html = renderedTemplate;
-      console.log(template);
+      // const renderedTemplate = template.replace(
+      //   /{{(.*?)}}/g,
+      //   (_, expression) => {
+      //     return eval(expression.trim());
+      //   }
+      // );
+      // // const htmlContent = ejs.renderFile(`./src/${html}`, data);
+      this.emailOptions.html = html;
 
       return this.send();
     } catch (error) {

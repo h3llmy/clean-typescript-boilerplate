@@ -1,4 +1,5 @@
 view engine for nodemailer
+catch db error like duplicate key
 
 
 // RENDER EJS CODE

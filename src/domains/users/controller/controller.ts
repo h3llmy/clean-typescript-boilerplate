@@ -1,10 +1,13 @@
+import Users from "../model/model";
+
 class UserController {
-  public detail(req: IRequest, res: IResponse) {
-    res.json({ joss: "mantap" });
+  public async detail(req: IRequest, res: IResponse) {
+    const userFind = await Users.findOne({ _id: req.user._id });
+    res.json(userFind);
   }
 
   public update(req: IRequest, res: IResponse) {
-    res.json({ joss: "mantap" });
+    res.json(req.user);
   }
 
   public list(req: IRequest, res: IResponse) {

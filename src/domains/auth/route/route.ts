@@ -13,13 +13,7 @@ class AuthRoute extends Route {
   }
 
   protected initializeRoutes() {
-    this.get(
-      "/register",
-      this.validator.register(),
-      this.withFile(),
-      // this.permission("authenticated"),
-      this.controller.register
-    );
+    this.post("/register", this.validator.register(), this.controller.register);
   }
 }
 

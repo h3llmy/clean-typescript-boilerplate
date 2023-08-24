@@ -1,16 +1,27 @@
 import Mail from "../../../services/mailler/mailler";
+import User from "../../users/model/model";
+import Random from "../../../services/random/random";
 
 class AuthController {
-  public register(req: IRequest, res: IResponse) {
-    // new Mail()
-    //   .to("helmytrisna86@gmail.com")
-    //   .subject("testing email")
-    //   .html("./index.html", { name: ["aselole", "mantap", "joss"] });
+  public async register(req: IRequest, res: IResponse) {
+    const otp = Random.otp();
 
-    console.log("mantap");
+    const newUser = await User.create({
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
+      status: "user",
+      otp: otp,
+      emailVerified: false,
+    });
+
+    new Mail()
+      .to(newUser.email)
+      .subject("registration otp")
+      .html(`<div>${newUser.otp}</div>`);
 
     res.json({
-      register: req.body,
+      register: newUser,
     });
   }
 }

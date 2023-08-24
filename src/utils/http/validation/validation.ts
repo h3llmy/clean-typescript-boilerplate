@@ -1,24 +1,15 @@
 import ValidateChain from "./validatorChain";
 
-class Validator {
-  public body = (field: string) => {
-    const validatorChain = new ValidateChain();
-    validatorChain.fieldName = field;
-    validatorChain.pathName = "body";
-    return validatorChain;
+class Validation {
+  public body = (field: string): ValidateChain => {
+    return new ValidateChain(field, "body");
   };
 
-  public query = (field: string) => {
-    const validatorChain = new ValidateChain();
-    validatorChain.fieldName = field;
-    validatorChain.pathName = "query";
-    return validatorChain;
+  public query = (field: string): ValidateChain => {
+    return new ValidateChain(field, "query");
   };
 
-  public validate = (
-    validators: ValidateChain[],
-    options?: { returnValidatedOnly?: boolean }
-  ) => {
+  public validate = (validators: ValidateChain[]): IRequestHandler => {
     return (req: IRequest, res: IResponse, next: INext) => {
       const errors: object = {
         body: {},
@@ -52,4 +43,4 @@ class Validator {
   };
 }
 
-export default Validator;
+export default Validation;

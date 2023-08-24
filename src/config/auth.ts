@@ -2,6 +2,6 @@ import IUsers from "domains/users/interface/interface";
 
 export default {
   permissionField: "status",
-  encriptedField: "password",
+  encriptedField: ["password", "otp"],
   validationField: "validator",
-} satisfies Record<string, keyof IUsers>;
+} satisfies Record<string, keyof IUsers | (keyof IUsers)[]>;

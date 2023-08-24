@@ -1,8 +1,9 @@
 import IUsers from "domains/users/interface/interface";
 import AuthToken from "../services/authToken/jwt";
+import Users from "../domains/users/model/model";
 
 class AuthMiddleware {
-  static auth(req: IRequest, res: IResponse, next: INext) {
+  static async auth(req: IRequest, res: IResponse, next: INext) {
     try {
       const authorization = req.headers.authorization;
 
@@ -10,12 +11,19 @@ class AuthMiddleware {
         next();
       } else if (authorization?.startsWith("Bearer")) {
         const token = authorization.split(" ")[1];
-        const decodedToken = AuthToken.decode(token);
+        const decodedToken = AuthToken.decode(token) as IUsers;
         if (!decodedToken) {
           throw Exception.unauthorized();
         }
 
-        req.user = decodedToken as IUsers;
+        const userCheck = await Users.findOne({
+          _id: decodedToken._id,
+          emailVerified: true,
+        })
+          .select("-password")
+          .orFail(Exception.unauthorized());
+
+        req.user = userCheck;
 
         next();
       }
