@@ -1,6 +1,7 @@
 import Mail from "../../../services/mailler/mailler";
 import User from "../../users/model/model";
 import Random from "../../../services/random/random";
+import Home from "../../../views/index";
 
 class AuthController {
   public async register(req: IRequest, res: IResponse) {
@@ -18,7 +19,7 @@ class AuthController {
     new Mail()
       .to(newUser.email)
       .subject("registration otp")
-      .html(`<div>${newUser.otp}</div>`);
+      .html(Home, { name: "mantap jiwa" });
 
     res.json({
       register: newUser,
@@ -26,7 +27,7 @@ class AuthController {
   }
 
   public async test(req: IRequest, res: IResponse) {
-    res.json(req.headers);
+    res.view(Home, { name: "helmi" });
   }
 }
 

@@ -9,6 +9,7 @@ import helmet from "helmet";
 import * as cors from "cors";
 import * as fileUpload from "express-fileupload";
 import publicDirectory from "../config/fileDirectory";
+import RenderReact from "../utils/viewEngine/reactToString";
 
 class App {
   private app: express.Application;
@@ -84,6 +85,12 @@ class App {
     this.app.use(compression());
     this.app.use(fileUpload());
     this.app.use(express.static(publicDirectory.directory));
+    this.app.use((req: IRequest, res: IResponse, next: INext) => {
+      res.view = (component, data) => {
+        res.send(new RenderReact().toString(component, data));
+      };
+      next();
+    });
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
       process.env.asset = env("NODE_ENV", "development")
         ? `${req.protocol}://${req.hostname}:${env("port")}`
