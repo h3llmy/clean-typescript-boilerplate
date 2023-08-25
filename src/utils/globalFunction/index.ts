@@ -8,11 +8,21 @@ import {
 import "./env/env";
 import "./asset/asset";
 import "./httpError/httpError";
-import IUsers from "../../domains/users/interface";
+import IUsers from "../../domains/users/interface/interface";
 import { UploadedFile } from "express-fileupload";
 
 declare global {
-  function env(name: string, optional?: any): string;
+  /**
+   * get env or give default value when env not found
+   *
+   * Example:
+   *
+   * env("PORT", 3000)
+   *
+   * that will return port from .env or when not foud that will return 3000
+   *
+   */
+  function env(name: string, optionalValue?: any): string;
   function asset(path: string): string;
   interface IRequest extends Request {
     user: IUsers;

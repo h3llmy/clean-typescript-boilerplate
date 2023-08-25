@@ -8,8 +8,7 @@ import * as compression from "compression";
 import helmet from "helmet";
 import * as cors from "cors";
 import * as fileUpload from "express-fileupload";
-import FileUpload from "../utils/http/fileUpload/fileUpload";
-import publicDirectory from "../config/publicDirectory";
+import publicDirectory from "../config/fileDirectory";
 
 class App {
   private app: express.Application;
@@ -21,14 +20,15 @@ class App {
     this.initializeMiddlewares();
     this.initializeControllers(routes);
     this.initializeErrorHandling();
+    this.listen();
   }
 
   public getServer() {
     return this.app;
   }
 
-  public listen() {
-    let port = Number(env("port", 3000));
+  private listen() {
+    const port = parseInt(env("port", 3000));
     this.startServer(port);
   }
 
@@ -36,10 +36,11 @@ class App {
     this.app
       .listen(port, () => {
         process.env.port = `${port}`;
-        console.log("\x1b[34m%s\x1b[0m", `App listening on the port ${port}`);
+        console.log("\x1b[34m%s\x1b[0m", `App listening on port ${port}`);
       })
       .on("error", (error) => {
         if ((error as any).code === "EADDRINUSE") {
+          console.log("\x1b[33m%s\x1b[0m", `port ${port} is already in use`);
           port++;
           this.startServer(port);
         } else {
@@ -81,7 +82,7 @@ class App {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
     this.app.use(compression());
-    this.app.use(fileUpload(), new FileUpload().initFile);
+    this.app.use(fileUpload());
     this.app.use(express.static(publicDirectory.directory));
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
       process.env.asset = env("NODE_ENV", "development")

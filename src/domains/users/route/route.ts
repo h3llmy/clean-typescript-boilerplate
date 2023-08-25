@@ -1,5 +1,5 @@
-import UserController from "./controller";
-import Route from "../../utils/http/route/route";
+import UserController from "../controller/controller";
+import Route from "../../../utils/http/route/route";
 
 class UserRoute extends Route {
   protected controller = new UserController();

@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import publicDirectory from "../../../config/publicDirectory";
+import fileDirectory from "../../../config/fileDirectory";
 
 class FileUpload {
   public initFile(req: IRequest, res: IResponse, next: INext) {
@@ -21,6 +21,8 @@ class FileUpload {
         req.files[fileKey] =
           uploadedFiles.length === 1 ? uploadedFiles[0] : uploadedFiles;
       });
+    } else {
+      req.files = {};
     }
 
     next();
@@ -28,20 +30,24 @@ class FileUpload {
 
   public saveFile(req: IRequest, res: IResponse, next: INext) {
     res.on("finish", function () {
-      if (req.files && res.statusCode >= 200 && res.statusCode < 400) {
+      if (
+        Object.keys(req.files).length > 0 &&
+        res.statusCode >= 200 &&
+        res.statusCode < 400
+      ) {
         Object.keys(req.files).forEach((fileKey) => {
           const uploadedFiles = Array.isArray(req.files[fileKey])
             ? (req.files[fileKey] as IUploadedFile[])
             : [req.files[fileKey] as IUploadedFile];
 
           uploadedFiles.forEach((file: IUploadedFile) => {
-            if (!fs.existsSync(`${publicDirectory.directory}/${file.mime}`)) {
-              fs.mkdirSync(`${publicDirectory.directory}/${file.mime}`, {
+            if (!fs.existsSync(`${fileDirectory.directory}/${file.mime}`)) {
+              fs.mkdirSync(`${fileDirectory.directory}/${file.mime}`, {
                 recursive: true,
               });
             }
 
-            file.mv(`${publicDirectory.directory}/${file.filePath}`);
+            file.mv(`${fileDirectory.directory}/${file.filePath}`);
           });
         });
       }
