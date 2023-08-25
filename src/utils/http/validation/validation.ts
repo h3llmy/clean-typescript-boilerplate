@@ -1,3 +1,4 @@
+import FileValidateChain from "./fileValidatorChain";
 import ValidateChain from "./validatorChain";
 
 class Validation {
@@ -9,7 +10,17 @@ class Validation {
     return new ValidateChain(field, "query");
   };
 
-  public validate = (validators: ValidateChain[]): IRequestHandler => {
+  public header = (field: string): ValidateChain => {
+    return new ValidateChain(field, "headers");
+  };
+
+  public files = (field: string): FileValidateChain => {
+    return new FileValidateChain(field, "files");
+  };
+
+  public validate = (
+    validators: ValidateChain[] | FileValidateChain[]
+  ): IRequestHandler => {
     return (req: IRequest, res: IResponse, next: INext) => {
       const errors: object = {
         body: {},

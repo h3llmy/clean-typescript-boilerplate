@@ -1,10 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import Validator from "./validator";
-
-interface IValidationRule {
-  validator: (value: any) => boolean;
-  message: string;
-}
+import IValidationRule from "./validationRuleInterface";
 
 class ValidateChain {
   public rules: IValidationRule[] = [];
@@ -93,6 +89,17 @@ class ValidateChain {
       validator: (value: any) =>
         Boolean(String(value).toLowerCase().match(regex)),
       message: message || `${this.fieldName} is not match with regex pattren`,
+    });
+    return this;
+  };
+
+  public custom = (
+    validator: (value: any) => boolean,
+    message: string
+  ): this => {
+    this.rules.push({
+      validator: validator,
+      message,
     });
     return this;
   };

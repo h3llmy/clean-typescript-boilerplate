@@ -31,11 +31,21 @@ class Validator {
     value === null ||
     typeof parseInt(value) === "number";
 
-  static minLength = (value: any, length: number): boolean =>
-    typeof value === "string" && value.length >= length;
+  static minLength = (value: any, length: number): boolean => {
+    if (typeof value === "string") {
+      return value.length >= length;
+    } else if (typeof value === "number") {
+      return value >= length;
+    }
+  };
 
-  static maxLength = (value: any, length: number): boolean =>
-    typeof value === "string" && value.length <= length;
+  static maxLength = (value: any, length: number): boolean => {
+    if (typeof value === "string") {
+      return value.length <= length;
+    } else if (typeof value === "number") {
+      return value <= length;
+    }
+  };
 }
 
 export default Validator;

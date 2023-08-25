@@ -44,6 +44,6 @@ const userSchema = new Schema<IUsers>({
 
 userSchema.plugin(encriptPassword);
 
-const Users = model("Users", userSchema);
+const Users = model<IUsers>("Users", userSchema);
 
 export default Users;

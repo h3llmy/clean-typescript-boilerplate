@@ -24,6 +24,10 @@ class AuthController {
       register: newUser,
     });
   }
+
+  public async test(req: IRequest, res: IResponse) {
+    res.json(req.headers);
+  }
 }
 
 export default AuthController;
