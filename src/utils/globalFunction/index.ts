@@ -10,6 +10,7 @@ import "./asset/asset";
 import "./httpError/httpError";
 import IUsers from "../../domains/users/interface/interface";
 import { UploadedFile } from "express-fileupload";
+import * as React from "react";
 
 declare global {
   /**
@@ -36,7 +37,9 @@ declare global {
     filePath: string;
     mime: string;
   }
-  interface IResponse extends Response {}
+  interface IResponse extends Response {
+    view: (component: React.ComponentType<any>, data?: object) => void;
+  }
   interface INext extends NextFunction {}
   interface IRequestHandler extends RequestHandler {}
 }

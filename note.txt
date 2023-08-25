@@ -1,27 +1,6 @@
-view engine for nodemailer
+todo list:
 catch db error like duplicate key
 add cornjob
 
-
-// RENDER EJS CODE
-const fs = require('fs');
-
-function renderEjsFile(templatePath, data) {
-  const template = fs.readFileSync(templatePath, 'utf-8');
-
-  const templateWithoutNewlines = template.replace(/\n/g, "");
-
-  // Replace <%= ... %> tags with evaluated JavaScript expressions
-  const renderedTemplate = templateWithoutNewlines.replace(/{{(.*?)}}/g, (_, expression) => {
-    return eval(expression.trim());
-  });
-
-  return renderedTemplate;
-}
-
-const data = {
-  name: 'John',
-};
-
-const renderedHtml = renderEjsFile('template.ejs', data);
-console.log(renderedHtml);
+bug:
+hot reaload on tsx file is not working

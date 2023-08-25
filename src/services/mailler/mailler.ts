@@ -1,6 +1,6 @@
 import * as nodemailer from "nodemailer";
-import * as ejs from "ejs";
-import * as fs from "fs";
+import * as React from "react";
+import RenderReact from "../../utils/viewEngine/reactToString";
 
 class Mail {
   private transporter: nodemailer.Transporter;
@@ -38,18 +38,12 @@ class Mail {
     return this;
   }
 
-  public html(html: string, data?: any): Promise<boolean> {
+  public html(
+    component: React.ComponentType<any>,
+    data?: object
+  ): Promise<boolean> {
     try {
-      // const template = fs.readFileSync(html, "utf-8");
-
-      // const renderedTemplate = template.replace(
-      //   /{{(.*?)}}/g,
-      //   (_, expression) => {
-      //     return eval(expression.trim());
-      //   }
-      // );
-      // // const htmlContent = ejs.renderFile(`./src/${html}`, data);
-      this.emailOptions.html = html;
+      this.emailOptions.html = new RenderReact().toString(component, data);
 
       return this.send();
     } catch (error) {
