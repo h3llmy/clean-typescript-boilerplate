@@ -55,10 +55,9 @@ export default function softDeletePlugin(schema: mongoose.Schema) {
       ...query,
       isDeleted: true,
     };
-    const deletedTemplates = await this.find(updatedQuery);
-    if (!deletedTemplates) {
-      return Error("element not found");
-    }
+    const deletedTemplates = await this.find(updatedQuery).orFail(
+      new Error(`${this.modelName} not found`)
+    );
     let restored = 0;
     for (const deletedTemplate of deletedTemplates) {
       if (deletedTemplate.isDeleted) {
@@ -78,7 +77,7 @@ export default function softDeletePlugin(schema: mongoose.Schema) {
 
   schema.static("softDelete", async function (query, options?: SaveOptions) {
     const templates = await this.find(query).orFail(
-      new Error("Element not found")
+      new Error(`${this.modelName} not found`)
     );
     let deleted = 0;
     for (const template of templates) {

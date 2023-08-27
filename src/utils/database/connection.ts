@@ -15,11 +15,10 @@ class ConnectMongoDB {
       );
     } catch (error) {
       console.error("\x1b[31m%s\x1b[0m", `Error: ${error.message}`);
-      let timer: number = 5000;
+      const timer: number = 5000;
+      console.info(`reconnect to MongoDB...`);
       setTimeout(() => {
-        console.info("reconnect to MongoDB");
         this.createConnection();
-        timer += 5000;
       }, timer);
     }
   }
