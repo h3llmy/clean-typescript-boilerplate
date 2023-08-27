@@ -19,7 +19,8 @@ class Validation {
   };
 
   public validate = (
-    validators: ValidateChain[] | FileValidateChain[]
+    validators: ValidateChain[] | FileValidateChain[],
+    options: { returnOnlyValidated: boolean } = { returnOnlyValidated: true }
   ): IRequestHandler => {
     return (req: IRequest, res: IResponse, next: INext) => {
       const errors: object = {
@@ -28,7 +29,13 @@ class Validation {
         files: {},
       };
 
-      validators.forEach((validator) => {
+      const validateField: Record<string, any> = {
+        body: {},
+        query: {},
+        files: {},
+      };
+
+      validators.forEach((validator: ValidateChain | FileValidateChain) => {
         const fieldValue = req[validator.pathName][validator.fieldName];
 
         for (const rule of validator.rules) {
@@ -37,6 +44,8 @@ class Validation {
             !errors[validator.pathName][validator.fieldName]
           ) {
             errors[validator.pathName][validator.fieldName] = rule.message;
+          } else {
+            validateField[validator.pathName][validator.fieldName] = fieldValue;
           }
         }
       });
@@ -47,6 +56,12 @@ class Validation {
 
       if (hasErrors) {
         throw Exception.unprocessableEntity("error validation", errors);
+      }
+
+      if (options.returnOnlyValidated) {
+        req.body = validateField.body;
+        req.query = validateField.query;
+        req.files = validateField.files;
       }
 
       next();

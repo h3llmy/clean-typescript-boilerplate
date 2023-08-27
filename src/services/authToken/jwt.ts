@@ -22,7 +22,7 @@ class AuthToken {
     try {
       return jwt.verify(payload, env("ACCESS_TOKEN_SECRET"));
     } catch (error) {
-      throw new Exception(error);
+      throw Exception.unauthorized();
     }
   };
 
@@ -47,7 +47,7 @@ class AuthToken {
     try {
       return jwt.verify(payload, env("ACCESS_REFRESH_SECRET"));
     } catch (error) {
-      throw new Exception(error);
+      throw Exception.unauthorized();
     }
   };
 }

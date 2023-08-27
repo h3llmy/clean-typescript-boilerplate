@@ -9,13 +9,8 @@ class AuthValidator extends Validator {
     ]);
   }
 
-  public test() {
-    return this.validate([
-      // this.files("file")
-      //   .required()
-      //   // .minSize(5000 * 1000)
-      //   .mimeType(["application/json", "image/jpeg", "image/png"]),
-    ]);
+  public statusUpdate() {
+    return this.validate([this.body("otp").required().isString()]);
   }
 }
 

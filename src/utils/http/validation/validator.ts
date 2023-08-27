@@ -31,6 +31,11 @@ class Validator {
     value === null ||
     typeof parseInt(value) === "number";
 
+  static isBoolean = (value: any): boolean =>
+    value === undefined ||
+    value === null ||
+    typeof Boolean(value) === "boolean";
+
   static minLength = (value: any, length: number): boolean => {
     if (typeof value === "string") {
       return value.length >= length;
