@@ -37,7 +37,10 @@ class App {
     this.app
       .listen(port, () => {
         process.env.port = `${port}`;
-        console.log("\x1b[34m%s\x1b[0m", `App listening on port ${port}`);
+        console.log(
+          "\x1b[34m%s\x1b[0m",
+          `App listening on port ${port} in ${env("node_env", "unknown")} mode`
+        );
       })
       .on("error", (error) => {
         if ((error as any).code === "EADDRINUSE") {

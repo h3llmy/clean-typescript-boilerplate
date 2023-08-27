@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+
 export type UserStatus = "user" | "admin";
 
 export default interface IUsers extends Document {

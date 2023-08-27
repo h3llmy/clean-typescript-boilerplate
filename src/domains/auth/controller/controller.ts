@@ -32,7 +32,7 @@ class AuthController {
       .subject("registration otp")
       .html(RegistrationOtp, { otp });
 
-    res.json({ token: authToken, otp });
+    res.json({ token: authToken });
   }
 
   public async statusUpdate(req: IRequest, res: IResponse) {
