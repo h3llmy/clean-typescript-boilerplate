@@ -4,4 +4,3 @@ add cornjob
 add paginate plugin
 
 bug:
-compare password not working

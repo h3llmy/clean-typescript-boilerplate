@@ -1,6 +1,15 @@
 import { Document, Model } from "mongoose";
+import config from "../../../../config/auth";
 
-export interface IEncriptPasswordModel<T extends Document> extends Model<T> {
-  matchPassword(emteredEncripted: string): boolean;
-  matchOtp(emteredEncripted: string): boolean;
-}
+const EncriptPassword = config.encriptedField;
+
+type EncriptPasswordType = (typeof EncriptPassword)[number];
+
+type IEncriptPasswordMethods = {
+  [K in EncriptPasswordType as `match${Capitalize<K>}`]: (
+    enteredPassword: string
+  ) => boolean;
+};
+
+export interface IEncriptPasswordModel<T extends Document>
+  extends Model<T, {}, IEncriptPasswordMethods> {}

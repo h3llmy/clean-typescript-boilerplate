@@ -1,19 +1,10 @@
-import { Model, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import IUsers from "../interface/interface";
 import encriptPassword from "../../../utils/database/plugin/encriptPassword/encriptPassword";
 import Validator from "../../../utils/http/validation/validator";
-import softDeletePlugin from "../../../utils/database/plugin/softDelete/softDelte";
+import softDeletePlugin from "../../../utils/database/plugin/softDelete/softDelete";
 import { ISoftDeleteModel } from "../../../utils/database/plugin/softDelete/softDeleteModel";
-
-interface IPasswordMethod {
-  matchPassword: (enteredPassword: string) => boolean;
-  matchOtp: (enteredPassword: string) => boolean;
-}
-
-interface ITestModel extends Model<IUsers, {}, IPasswordMethod> {
-  matchPassword: (enteredPassword: string) => boolean;
-  matchOtp: (enteredPassword: string) => boolean;
-}
+import { IEncriptPasswordModel } from "../../../utils/database/plugin/encriptPassword/encriptPasswordModel";
 
 const userSchema = new Schema<IUsers>(
   {
@@ -62,6 +53,9 @@ const userSchema = new Schema<IUsers>(
 userSchema.plugin(encriptPassword);
 userSchema.plugin(softDeletePlugin);
 
-const Users = model<IUsers, ITestModel>("Users", userSchema);
+const Users = model<
+  IUsers,
+  IEncriptPasswordModel<IUsers> & ISoftDeleteModel<IUsers>
+>("Users", userSchema);
 
 export default Users;

@@ -1,6 +1,6 @@
 import { CallbackWithoutResultAndOptionalError, Schema } from "mongoose";
 import config from "../../../../config/auth";
-import * as bcrypt from "bcrypt";
+import Encript from "../../../../services/encryption/encryption";
 
 export default function encryptPassword(schema: Schema) {
   schema.pre("save", function (next: CallbackWithoutResultAndOptionalError) {
@@ -10,7 +10,7 @@ export default function encryptPassword(schema: Schema) {
         typeof this[field] === "string" &&
         this[field].trim().length > 0
       ) {
-        const hashedPassword = bcrypt.hashSync(this[field], 10);
+        const hashedPassword = new Encript().hash(this[field]);
         this[field] = hashedPassword;
       }
     }
@@ -24,7 +24,7 @@ export default function encryptPassword(schema: Schema) {
 
     schema.methods[methodName] = function (enteredPassword: string) {
       if (typeof this[field] === "string" && this[field].trim().length > 0) {
-        return bcrypt.compareSync(enteredPassword, this[field]);
+        return new Encript().compare(enteredPassword, this[field]);
       }
       return false;
     };
