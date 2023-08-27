@@ -1,10 +1,10 @@
 import * as bcrypt from "bcrypt";
 
 class Encript {
-  static hash = (password: string) => {
-    return bcrypt.hash(password, 10);
+  public hash = (password: string) => {
+    return bcrypt.hashSync(password, 10);
   };
-  static compare = (enteredPassword: string, currentPassword: string) => {
+  public compare = (enteredPassword: string, currentPassword: string) => {
     return bcrypt.compareSync(enteredPassword, currentPassword);
   };
 }

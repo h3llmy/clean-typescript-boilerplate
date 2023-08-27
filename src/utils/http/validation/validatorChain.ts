@@ -60,6 +60,14 @@ class ValidateChain {
     return this;
   };
 
+  public isBoolean(): this {
+    this.rules.push({
+      validator: Validator.isBoolean,
+      message: `${this.fieldName} must be an boolean`,
+    });
+    return this;
+  }
+
   public isObjectId = (): this => {
     this.rules.push({
       validator: (value: any) => isValidObjectId(value),

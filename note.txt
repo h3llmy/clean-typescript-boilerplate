@@ -1,6 +1,7 @@
 todo list:
-catch db error like duplicate key
+add catch db error like duplicate key
 add cornjob
+add paginate plugin
 
 bug:
-hot reaload on tsx file is not working
+compare password not working

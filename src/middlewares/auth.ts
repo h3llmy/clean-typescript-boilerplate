@@ -1,6 +1,6 @@
-import IUsers from "domains/users/interface/interface";
 import AuthToken from "../services/authToken/jwt";
 import Users from "../domains/users/model/model";
+import { IAuthToken } from "domains/auth/interface/authTokenInterface";
 
 class AuthMiddleware {
   static async auth(req: IRequest, res: IResponse, next: INext) {
@@ -11,8 +11,8 @@ class AuthMiddleware {
         next();
       } else if (authorization?.startsWith("Bearer")) {
         const token = authorization.split(" ")[1];
-        const decodedToken = AuthToken.decode(token) as IUsers;
-        if (!decodedToken) {
+        const decodedToken = AuthToken.decode(token) as IAuthToken;
+        if (decodedToken.type !== "login") {
           throw Exception.unauthorized();
         }
 
@@ -20,7 +20,7 @@ class AuthMiddleware {
           _id: decodedToken._id,
           emailVerified: true,
         })
-          .select("-password")
+          .select("-password -otp")
           .orFail(Exception.unauthorized());
 
         req.user = userCheck;

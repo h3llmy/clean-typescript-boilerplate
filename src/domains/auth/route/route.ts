@@ -15,10 +15,9 @@ class AuthRoute extends Route {
   protected initializeRoutes() {
     this.post("/register", this.validator.register(), this.controller.register);
     this.post(
-      "/test",
-      this.withFile(),
-      this.validator.test(),
-      this.controller.test
+      "/update-status/:token",
+      this.validator.statusUpdate(),
+      this.controller.statusUpdate
     );
   }
 }
