@@ -1,5 +1,5 @@
 export default {
-  path: "src/storage/app.log",
+  path: "app.log",
   format: [
     "ip: :remote-addr",
     ":method",

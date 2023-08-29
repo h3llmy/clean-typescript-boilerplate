@@ -14,10 +14,33 @@ class AuthRoute extends Route {
 
   protected initializeRoutes() {
     this.post("/register", this.validator.register(), this.controller.register);
-    this.post(
+
+    this.put("/resend-otp/:token", this.controller.resendOtp);
+
+    this.put(
       "/update-status/:token",
       this.validator.statusUpdate(),
       this.controller.statusUpdate
+    );
+
+    this.post("/login", this.validator.login(), this.controller.login);
+
+    this.post(
+      "/forget-password",
+      this.validator.forgetPassword(),
+      this.controller.forgetPassword
+    );
+
+    this.put(
+      "/reset-password/:token",
+      this.validator.resetPassword(),
+      this.controller.resetPassword
+    );
+
+    this.post(
+      "/refresh-token",
+      this.validator.refreshToken(),
+      this.controller.refreshToken
     );
   }
 }

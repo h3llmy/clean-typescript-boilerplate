@@ -1,5 +1,5 @@
 import Mail from "../../../services/mailler/mailler";
-import User from "../../users/model/model";
+import Users from "../../users/model/model";
 import Random from "../../../services/random/random";
 import AuthToken from "../../../services/authToken/jwt";
 import RegistrationOtp from "../../../services/mailler/views/registrationOtp";
@@ -7,15 +7,20 @@ import { IAuthToken } from "../interface/authTokenInterface";
 
 class AuthController {
   public async register(req: IRequest, res: IResponse) {
-    const { email, username, password } = req.body;
+    const { email, username, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      throw Exception.badRequest("password not match");
+    }
+
     const otp = new Random().otp();
 
-    const newUser = await User.create({
+    const newUser = await Users.create({
       email,
       username,
       password,
-      status: "user",
       otp,
+      status: "user",
       emailVerified: false,
     });
 
@@ -35,6 +40,42 @@ class AuthController {
     res.json({ token: authToken });
   }
 
+  public async resendOtp(req: IRequest, res: IResponse) {
+    const { token } = req.params;
+    const newOtp = new Random().otp();
+
+    const decodedToken = AuthToken.decode(token) as IAuthToken;
+    if (decodedToken.type !== "register") {
+      throw Exception.badRequest("invalid token");
+    }
+
+    const user = await Users.findById(decodedToken._id).orFail(
+      Exception.unauthorized("user not found")
+    );
+
+    if (user.emailVerified) {
+      throw Exception.badRequest("user already register");
+    }
+
+    user.otp = newOtp;
+    user.save();
+
+    const tokenEmail = AuthToken.encode(
+      {
+        _id: user._id,
+        type: "register",
+      } as IAuthToken,
+      "10m"
+    );
+
+    new Mail()
+      .to(user.email)
+      .subject("registration otp")
+      .html(RegistrationOtp, { otp: newOtp });
+
+    res.json({ token: tokenEmail });
+  }
+
   public async statusUpdate(req: IRequest, res: IResponse) {
     const { token } = req.params;
     const { otp } = req.body;
@@ -44,9 +85,9 @@ class AuthController {
       throw Exception.badRequest();
     }
 
-    const user = await User.findOne({
-      _id: decodedToken._id,
-    }).orFail(Exception.unauthorized());
+    const user = await Users.findById(decodedToken._id).orFail(
+      Exception.unauthorized()
+    );
 
     if (!user.matchOtp(otp)) {
       user.validator++;
@@ -67,7 +108,116 @@ class AuthController {
     user.validator = undefined;
     user.save();
 
-    res.json({ user });
+    res.json({ message: "account sucsses to verifid" });
+  }
+
+  public async login(req: IRequest, res: IResponse) {
+    const { username, password } = req.body;
+
+    const user = await Users.findOne({ username, emailVerified: true }).orFail(
+      Exception.unauthorized()
+    );
+
+    if (!user.matchPassword(password)) {
+      throw Exception.unauthorized();
+    }
+
+    const accessToken = AuthToken.encode(
+      {
+        _id: user._id,
+        type: "login",
+      } as IAuthToken,
+      "30s"
+    );
+
+    const refreshToken = AuthToken.encodeRefresh(
+      {
+        _id: user._id,
+        type: "login",
+      } as IAuthToken,
+      "30d"
+    );
+
+    res.json({ accessToken, refreshToken });
+  }
+
+  public async forgetPassword(req: IRequest, res: IResponse) {
+    const { email, url } = req.body;
+    const user = await Users.findOne({ email, emailVerified: true }).orFail(
+      Exception.unauthorized()
+    );
+
+    const tokenReset = AuthToken.encode(
+      {
+        _id: user._id,
+        type: "reset password",
+      } as IAuthToken,
+      "10m"
+    );
+
+    new Mail()
+      .to(user.email)
+      .subject("reset password")
+      .html(RegistrationOtp, { tokenReset, url });
+
+    res.json({ message: `email sended to ${user.email}` });
+  }
+
+  public async resetPassword(req: IRequest, res: IResponse) {
+    const { newPassword, confirmNewPassword } = req.body;
+    const { token } = req.params;
+
+    if (newPassword !== confirmNewPassword) {
+      throw Exception.badRequest("password not match");
+    }
+
+    const decodedToken = AuthToken.decode(token) as IAuthToken;
+    if (decodedToken.type !== "reset password") {
+      throw Exception.unauthorized("invalid token");
+    }
+
+    const user = await Users.findOne({
+      _id: decodedToken._id,
+      emailVerified: true,
+    }).orFail(Exception.badRequest("user not found"));
+
+    user.password = newPassword;
+    user.save();
+
+    res.json({ message: "password has been updated" });
+  }
+
+  public async refreshToken(req: IRequest, res: IResponse) {
+    const { refreshTokenBody } = req.body;
+
+    const decodedToken = AuthToken.decodeRefresh(
+      refreshTokenBody
+    ) as IAuthToken;
+    if (decodedToken.type !== "login") {
+      throw Exception.unauthorized();
+    }
+
+    const user = await Users.findById(decodedToken._id).orFail(
+      Exception.unauthorized()
+    );
+
+    const accessToken = AuthToken.encode(
+      {
+        _id: user._id,
+        type: "login",
+      } as IAuthToken,
+      "30s"
+    );
+
+    const refreshToken = AuthToken.encodeRefresh(
+      {
+        _id: user._id,
+        type: "login",
+      } as IAuthToken,
+      "30d"
+    );
+
+    res.json({ accessToken, refreshToken });
   }
 }
 

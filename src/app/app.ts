@@ -3,7 +3,7 @@ import { middlewares } from "./kernel";
 import ErrorHandler from "../utils/http/error/errorHandling";
 import "../utils/globalFunction/index";
 import "express-async-errors";
-import ConnectMongoDB from "../utils/database/connection";
+import ConnectMongoDB from "../utils/database/mongoose/connection";
 import * as compression from "compression";
 import helmet from "helmet";
 import * as cors from "cors";
@@ -89,8 +89,8 @@ class App {
     this.app.use(fileUpload());
     this.app.use(express.static(publicDirectory.directory));
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
-      res.view = (component, data) => {
-        res.send(new RenderReact().toString(component, data));
+      res.view = async (component, data) => {
+        res.send(await new RenderReact().toString(component, data));
       };
       next();
     });

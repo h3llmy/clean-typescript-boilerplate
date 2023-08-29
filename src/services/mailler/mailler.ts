@@ -38,12 +38,15 @@ class Mail {
     return this;
   }
 
-  public html(
+  public async html(
     component: React.ComponentType<any>,
     data?: object
   ): Promise<boolean> {
     try {
-      this.emailOptions.html = new RenderReact().toString(component, data);
+      this.emailOptions.html = await new RenderReact().toString(
+        component,
+        data
+      );
 
       return this.send();
     } catch (error) {

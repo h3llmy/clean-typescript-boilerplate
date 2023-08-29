@@ -1,6 +1,6 @@
 import { CallbackWithoutResultAndOptionalError, Schema } from "mongoose";
-import config from "../../../../config/auth";
-import Encript from "../../../../services/encryption/encryption";
+import config from "../../../../../config/auth";
+import Encript from "../../../../../services/encryption/encryption";
 
 export default function encryptPassword(schema: Schema) {
   schema.pre("save", function (next: CallbackWithoutResultAndOptionalError) {
