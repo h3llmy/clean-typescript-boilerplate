@@ -37,8 +37,11 @@ declare global {
     router: Router;
     prefix?: string;
   }
-
   interface IResponse extends Response {
+    /**
+     * it just only used to render static page
+     *
+     */
     view: (component: React.ComponentType<any>, data?: object) => void;
   }
   interface INext extends NextFunction {}

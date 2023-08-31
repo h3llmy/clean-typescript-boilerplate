@@ -5,7 +5,7 @@ class ErrorHandler {
     const path = err.path;
 
     if (env("NODE_ENV", "development") !== "production") {
-      // console.error(err);
+      console.error(err);
     }
 
     if ((err as any)?.code === 11000) {

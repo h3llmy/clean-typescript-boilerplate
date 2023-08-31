@@ -112,7 +112,6 @@ class FileValidateChain {
   };
 
   public maxFile = (maxLength: number): this => {
-    let message: string;
     this.rules.push({
       validator: (value: IUploadedFile | IUploadedFile[]): boolean => {
         if (maxLength > 1 && value) {
