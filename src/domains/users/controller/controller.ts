@@ -1,5 +1,5 @@
 import Users from "../model/model";
-import RegistrationOtp from "../../../services/mailler/views/registrationOtp";
+
 class UserController {
   public async detail(req: IRequest, res: IResponse) {
     const userFind = await Users.findOne({ _id: req.user._id });
@@ -17,11 +17,13 @@ class UserController {
     res.json({ mantap: new Date() });
   }
 
-  public test(req: IRequest, res: IResponse) {
-    if (Array.isArray(req.files.something)) {
-      Exception.badRequest();
-    }
-    res.view(RegistrationOtp, { otp: "123123" });
+  public async test(req: IRequest, res: IResponse) {
+    const { limit, skip } = req.query;
+
+    const user = await Users.find()
+      .limit(Number(limit) || 1)
+      .skip(Number(skip) || 0);
+    res.json(user);
   }
 }
 

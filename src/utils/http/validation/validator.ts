@@ -27,9 +27,7 @@ class Validator {
     value === undefined || value === null || typeof value === "string";
 
   static isNumber = (value: any): boolean =>
-    value === undefined ||
-    value === null ||
-    typeof parseInt(value) === "number";
+    value === undefined || value === null || !Number.isNaN(parseInt(value));
 
   static isBoolean = (value: any): boolean =>
     value === undefined ||

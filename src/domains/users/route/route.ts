@@ -16,12 +16,7 @@ class UserRoute extends Route {
     this.get("/", this.permission("authenticated"), this.controller.detail);
     this.put("/", this.permission("authenticated"), this.controller.update);
     this.get("/list", this.permission("admin"), this.controller.list);
-    this.post(
-      "/test",
-      this.withFile(),
-      this.validator.test(),
-      this.controller.test
-    );
+    this.get("/test", this.validator.test(), this.controller.test);
   }
 }
 
