@@ -4,4 +4,4 @@ import App from "./app/app";
 
 const app = new App([new UserRoute(), new AuthRoute()]);
 
-export default app;
+export default app.getServer();

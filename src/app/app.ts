@@ -44,9 +44,11 @@ class App {
       })
       .on("error", (error) => {
         if ((error as any).code === "EADDRINUSE") {
-          console.log("\x1b[33m%s\x1b[0m", `port ${port} is already in use`);
-          port++;
-          this.startServer(port);
+          if (env("NODE_ENV") !== "stageing") {
+            console.log("\x1b[33m%s\x1b[0m", `port ${port} is already in use`);
+            port++;
+            this.startServer(port);
+          }
         } else {
           console.error("Error starting server:", error);
         }
@@ -126,8 +128,8 @@ class App {
     this.app.use(ErrorHandler.handler);
   }
 
-  private connectDb() {
-    ConnectMongoDB.createConnection();
+  private async connectDb() {
+    await ConnectMongoDB.createConnection();
   }
 }
 
