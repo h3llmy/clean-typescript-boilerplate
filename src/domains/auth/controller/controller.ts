@@ -3,7 +3,7 @@ import Users from "../../users/model/model";
 import Random from "../../../services/random/random";
 import AuthToken from "../../../services/authToken/jwt";
 import RegistrationOtp from "../../../services/mailler/views/registrationOtp";
-import ResetPassword from "../../../services/mailler/views/ResetPassword";
+import ResetPassword from "../../../services/mailler/views/resetPassword";
 import { IAuthToken } from "../interface/authTokenInterface";
 
 class AuthController {
@@ -15,6 +15,14 @@ class AuthController {
     }
 
     const otp = new Random().stringNumber(6);
+
+    const checkUser = await Users.findOne({
+      $or: [{ email }, { username }],
+    });
+
+    if (checkUser?.emailVerified) {
+      throw Exception.badRequest("user already exists");
+    }
 
     const newUser = await Users.create({
       email,

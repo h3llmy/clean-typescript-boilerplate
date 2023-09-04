@@ -3,3 +3,5 @@ dist
 *.log
 storage
 *.txt
+docker-compose.yml
+Dockerfile*

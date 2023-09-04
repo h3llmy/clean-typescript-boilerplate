@@ -1,5 +1,4 @@
 todo list:
 add testing
-change tslint to eslint
 
 bug:

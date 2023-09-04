@@ -9,7 +9,7 @@ class RenderReact {
     component: React.ComponentType<any>,
     data?: object
   ): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve(renderToStaticMarkup(React.createElement(component, data)));
     });
   }
