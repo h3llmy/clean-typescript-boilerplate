@@ -3,7 +3,7 @@ import { middlewares } from "./kernel";
 import ErrorHandler from "../utils/http/error/errorHandling";
 import "../utils/globalFunction/index";
 import "express-async-errors";
-import ConnectMongoDB from "../utils/database/connection";
+import ConnectMongoDB from "../utils/database/mongoose/connection";
 import * as compression from "compression";
 import helmet from "helmet";
 import * as cors from "cors";
@@ -39,14 +39,16 @@ class App {
         process.env.port = `${port}`;
         console.log(
           "\x1b[34m%s\x1b[0m",
-          `App listening on port ${port} in ${env("node_env", "unknown")} mode`
+          `App listening on port ${port} in ${env("NODE_ENV", "unknown")} mode`
         );
       })
       .on("error", (error) => {
         if ((error as any).code === "EADDRINUSE") {
-          console.log("\x1b[33m%s\x1b[0m", `port ${port} is already in use`);
-          port++;
-          this.startServer(port);
+          if (env("NODE_ENV") !== "stageing") {
+            console.log("\x1b[33m%s\x1b[0m", `port ${port} is already in use`);
+            port++;
+            this.startServer(port);
+          }
         } else {
           console.error("Error starting server:", error);
         }
@@ -89,8 +91,8 @@ class App {
     this.app.use(fileUpload());
     this.app.use(express.static(publicDirectory.directory));
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
-      res.view = (component, data) => {
-        res.send(new RenderReact().toString(component, data));
+      res.view = async (component, data) => {
+        res.send(await new RenderReact().toString(component, data));
       };
       next();
     });
@@ -126,8 +128,8 @@ class App {
     this.app.use(ErrorHandler.handler);
   }
 
-  private connectDb() {
-    ConnectMongoDB.createConnection();
+  private async connectDb() {
+    await ConnectMongoDB.createConnection();
   }
 }
 

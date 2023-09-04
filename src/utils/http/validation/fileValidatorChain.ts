@@ -69,7 +69,13 @@ class FileValidateChain {
 
   public maxSize = (limit: number | bigint): this => {
     this.rules.push({
-      validator: (value: IUploadedFile): boolean => value?.size <= limit,
+      validator: (value: IUploadedFile | IUploadedFile[]): boolean => {
+        if (Array.isArray(value)) {
+          return value.every((val: IUploadedFile) => val?.size <= limit);
+        } else {
+          return value?.size <= limit;
+        }
+      },
       message: `${this.fieldName} must smaller than ${limit} kb`,
     });
     return this;
@@ -77,7 +83,13 @@ class FileValidateChain {
 
   public minSize = (limit: number | bigint): this => {
     this.rules.push({
-      validator: (value: IUploadedFile): boolean => value?.size >= limit,
+      validator: (value: IUploadedFile | IUploadedFile[]): boolean => {
+        if (Array.isArray(value)) {
+          return value.every((val: IUploadedFile) => val?.size >= limit);
+        } else {
+          return value?.size >= limit;
+        }
+      },
       message: `${this.fieldName} must larger than ${limit} kb`,
     });
     return this;
@@ -85,9 +97,36 @@ class FileValidateChain {
 
   public mimeType = (type: MimeType | MimeType[]): this => {
     this.rules.push({
-      validator: (value: IUploadedFile): boolean =>
-        type.includes(value?.mimetype as MimeType),
+      validator: (value: IUploadedFile | IUploadedFile[]): boolean => {
+        if (Array.isArray(value)) {
+          return value.every((val: IUploadedFile) =>
+            type.includes(val?.mimetype as MimeType)
+          );
+        } else {
+          return type.includes(value?.mimetype as MimeType);
+        }
+      },
       message: `${this.fieldName} must be ${type}`,
+    });
+    return this;
+  };
+
+  public maxFile = (maxLength: number): this => {
+    this.rules.push({
+      validator: (value: IUploadedFile | IUploadedFile[]): boolean => {
+        if (maxLength > 1 && value) {
+          if (Array.isArray(value)) {
+            return value.length >= maxLength;
+          } else {
+            return true;
+          }
+        } else if (maxLength === 1) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      message: `${this.fieldName} must be maximum of ${maxLength} file`,
     });
     return this;
   };

@@ -44,7 +44,7 @@ class Validation {
             !errors[validator.pathName][validator.fieldName]
           ) {
             errors[validator.pathName][validator.fieldName] = rule.message;
-          } else {
+          } else if (fieldValue) {
             validateField[validator.pathName][validator.fieldName] = fieldValue;
           }
         }

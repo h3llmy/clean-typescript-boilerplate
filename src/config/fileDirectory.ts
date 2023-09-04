@@ -1,3 +1,3 @@
 export default {
-  directory: "src/storage/public",
+  directory: "storage/public",
 };

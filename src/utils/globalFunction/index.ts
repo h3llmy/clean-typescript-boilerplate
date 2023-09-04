@@ -29,15 +29,19 @@ declare global {
     user: IUsers;
     files?: { [formField: string]: IUploadedFile | IUploadedFile[] };
   }
-  interface IRouter {
-    router: Router;
-    prefix?: string;
-  }
   interface IUploadedFile extends UploadedFile {
     filePath: string;
     mime: string;
   }
+  interface IRouter {
+    router: Router;
+    prefix?: string;
+  }
   interface IResponse extends Response {
+    /**
+     * it just only used to render static page
+     *
+     */
     view: (component: React.ComponentType<any>, data?: object) => void;
   }
   interface INext extends NextFunction {}

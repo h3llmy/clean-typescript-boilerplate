@@ -1,9 +1,20 @@
 import * as React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import {
+  renderToStaticMarkup,
+  renderToStaticNodeStream,
+} from "react-dom/server";
 
 class RenderReact {
-  public toString(component: React.ComponentType<any>, data?: object): string {
-    return renderToStaticMarkup(React.createElement(component, data));
+  public toString(
+    component: React.ComponentType<any>,
+    data?: object
+  ): Promise<string> {
+    return new Promise((resolve) => {
+      resolve(renderToStaticMarkup(React.createElement(component, data)));
+    });
+  }
+  public toNodeStream(component: React.ComponentType<any>, data?: object) {
+    return renderToStaticNodeStream(React.createElement(component, data));
   }
 }
 

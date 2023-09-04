@@ -1,10 +1,11 @@
 import { Schema, model } from "mongoose";
 import IUsers from "../interface/interface";
-import encriptPassword from "../../../utils/database/plugin/encriptPassword/encriptPassword";
 import Validator from "../../../utils/http/validation/validator";
-import softDeletePlugin from "../../../utils/database/plugin/softDelete/softDelete";
-import { ISoftDeleteModel } from "../../../utils/database/plugin/softDelete/softDeleteModel";
-import { IEncriptPasswordModel } from "../../../utils/database/plugin/encriptPassword/encriptPasswordModel";
+import paginationPlugin from "../../../utils/database/mongoose/plugin/pagination/pagination";
+import softDeletePlugin from "../../../utils/database/mongoose/plugin/softDelete/softDelete";
+import { ISoftDeleteModel } from "../../../utils/database/mongoose/plugin/softDelete/softDeleteModel";
+import encriptPassword from "../../../utils/database/mongoose/plugin/encriptPassword/encriptPassword";
+import { IEncriptPasswordModel } from "../../../utils/database/mongoose/plugin/encriptPassword/encriptPasswordModel";
 
 const userSchema = new Schema<IUsers>(
   {
@@ -52,6 +53,7 @@ const userSchema = new Schema<IUsers>(
 
 userSchema.plugin(encriptPassword);
 userSchema.plugin(softDeletePlugin);
+userSchema.plugin(paginationPlugin);
 
 const Users = model<
   IUsers,

@@ -1,6 +1,3 @@
 todo list:
-add catch db error like duplicate key
-add cornjob
-add paginate plugin
 
 bug:

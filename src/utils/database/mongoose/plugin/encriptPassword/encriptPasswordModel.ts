@@ -1,5 +1,5 @@
 import { Document, Model } from "mongoose";
-import config from "../../../../config/auth";
+import config from "../../../../../config/auth";
 
 const EncriptPassword = config.encriptedField;
 
