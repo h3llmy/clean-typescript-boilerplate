@@ -1,6 +1,6 @@
-import Validator from "../../../utils/http/validation/validation";
+import Validation from "../../../utils/http/validation/validation";
 
-class AuthValidator extends Validator {
+class AuthValidator extends Validation {
   public register() {
     return this.validate([
       this.body("username").required().isString(),

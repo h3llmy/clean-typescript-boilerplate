@@ -2,28 +2,31 @@ import Users from "../model/model";
 
 class UserController {
   public async detail(req: IRequest, res: IResponse) {
-    const userFind = await Users.findOne({ _id: req.user._id });
-    res.json(userFind);
+    const user = await Users.findById(req.user._id).select("-password");
+    res.json({ user });
   }
 
-  public update(req: IRequest, res: IResponse) {
-    res.json(req.user);
+  public async update(req: IRequest, res: IResponse) {
+    const { email, username, password } = req.body;
+
+    const user = await Users.findByIdAndUpdate(req.user._id, {
+      email,
+      username,
+      password,
+    });
+
+    res.json({ user });
   }
 
-  public list(req: IRequest, res: IResponse) {
-    if (req.query.mantap) {
-      throw new Exception("anjing", 500);
-    }
-    res.json({ mantap: new Date() });
-  }
-
-  public async test(req: IRequest, res: IResponse) {
-    const { limit, skip } = req.query;
+  public async list(req: IRequest, res: IResponse) {
+    const { limit, skip, emailVerified } = req.query;
 
     const user = await Users.find()
-      .limit(Number(limit) || 1)
+      .select("-password -otp")
+      .limit(Number(limit) || 10)
       .skip(Number(skip) || 0);
-    res.json(user);
+
+    res.json({ user });
   }
 }
 

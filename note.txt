@@ -1,7 +1,5 @@
 todo list:
-add cornjob
-add paginate plugin
-fix auth email view
+add testing
 change tslint to eslint
 
 bug:

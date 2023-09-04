@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
 import IUsers from "../interface/interface";
-import encriptPassword from "../../../utils/database/mongoose/plugin/encriptPassword/encriptPassword";
 import Validator from "../../../utils/http/validation/validator";
 import softDeletePlugin from "../../../utils/database/mongoose/plugin/softDelete/softDelete";
 import { ISoftDeleteModel } from "../../../utils/database/mongoose/plugin/softDelete/softDeleteModel";
+import encriptPassword from "../../../utils/database/mongoose/plugin/encriptPassword/encriptPassword";
 import { IEncriptPasswordModel } from "../../../utils/database/mongoose/plugin/encriptPassword/encriptPasswordModel";
 
 const userSchema = new Schema<IUsers>(

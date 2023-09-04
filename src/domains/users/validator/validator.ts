@@ -1,10 +1,11 @@
-import Validator from "../../../utils/http/validation/validation";
+import Validation from "../../../utils/http/validation/validation";
 
-class UserValidator extends Validator {
-  public test() {
+class UserValidator extends Validation {
+  public list() {
     return this.validate([
       this.query("limit").isNumber(),
       this.query("skip").isNumber(),
+      this.query("emailVerified").isBoolean(),
     ]);
   }
 }

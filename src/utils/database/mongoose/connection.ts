@@ -14,9 +14,7 @@ class ConnectMongoDB {
         `MongoDB connected: ${mongoose.connection.host}`
       );
     } catch (error) {
-      // console.error("\x1b[31m%s\x1b[0m", `Error: ${error.message}`);
-      console.log(error);
-
+      console.error("\x1b[31m%s\x1b[0m", `Error: ${error.message}`);
       const timer: number = 5000;
       console.info(`reconnect to MongoDB...`);
       setTimeout(() => {

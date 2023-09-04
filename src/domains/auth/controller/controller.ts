@@ -3,6 +3,7 @@ import Users from "../../users/model/model";
 import Random from "../../../services/random/random";
 import AuthToken from "../../../services/authToken/jwt";
 import RegistrationOtp from "../../../services/mailler/views/registrationOtp";
+import ResetPassword from "../../../services/mailler/views/ResetPassword";
 import { IAuthToken } from "../interface/authTokenInterface";
 
 class AuthController {
@@ -13,7 +14,7 @@ class AuthController {
       throw Exception.badRequest("password not match");
     }
 
-    const otp = new Random().otp();
+    const otp = new Random().stringNumber(6);
 
     const newUser = await Users.create({
       email,
@@ -24,7 +25,7 @@ class AuthController {
       emailVerified: false,
     });
 
-    const authToken = AuthToken.encode(
+    const token = AuthToken.encode(
       {
         _id: newUser._id,
         type: "register",
@@ -37,12 +38,12 @@ class AuthController {
       .subject("registration otp")
       .html(RegistrationOtp, { otp });
 
-    res.json({ token: authToken });
+    res.json({ token });
   }
 
   public async resendOtp(req: IRequest, res: IResponse) {
     const { token } = req.params;
-    const newOtp = new Random().otp();
+    const newOtp = new Random().stringNumber(6);
 
     const decodedToken = AuthToken.decode(token) as IAuthToken;
     if (decodedToken.type !== "register") {
@@ -158,7 +159,7 @@ class AuthController {
     new Mail()
       .to(user.email)
       .subject("reset password")
-      .html(RegistrationOtp, { tokenReset, url });
+      .html(ResetPassword, { tokenReset, url });
 
     res.json({ message: `email sended to ${user.email}` });
   }
@@ -188,11 +189,9 @@ class AuthController {
   }
 
   public async refreshToken(req: IRequest, res: IResponse) {
-    const { refreshTokenBody } = req.body;
+    const { refreshToken } = req.body;
 
-    const decodedToken = AuthToken.decodeRefresh(
-      refreshTokenBody
-    ) as IAuthToken;
+    const decodedToken = AuthToken.decodeRefresh(refreshToken) as IAuthToken;
     if (decodedToken.type !== "login") {
       throw Exception.unauthorized();
     }
@@ -209,7 +208,7 @@ class AuthController {
       "30s"
     );
 
-    const refreshToken = AuthToken.encodeRefresh(
+    const newRefreshToken = AuthToken.encodeRefresh(
       {
         _id: user._id,
         type: "login",
@@ -217,7 +216,7 @@ class AuthController {
       "30d"
     );
 
-    res.json({ accessToken, refreshToken });
+    res.json({ accessToken, refreshToken: newRefreshToken });
   }
 }
 

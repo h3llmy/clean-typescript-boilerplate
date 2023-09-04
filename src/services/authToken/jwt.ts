@@ -34,7 +34,7 @@ class AuthToken {
     }
   ): string => {
     try {
-      return jwt.sign(payload, env("ACCESS_REFRESH_SECRET"), {
+      return jwt.sign(payload, env("REFRESH_TOKEN_SECRET"), {
         ...jwtOption,
         expiresIn,
       });
@@ -45,7 +45,7 @@ class AuthToken {
 
   static decodeRefresh = (payload: string): string | jwt.JwtPayload => {
     try {
-      return jwt.verify(payload, env("ACCESS_REFRESH_SECRET"));
+      return jwt.verify(payload, env("REFRESH_TOKEN_SECRET"));
     } catch (error) {
       throw Exception.unauthorized();
     }
