@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import IUsers from "../interface/interface";
 import Validator from "../../../utils/http/validation/validator";
+import paginationPlugin from "../../../utils/database/mongoose/plugin/pagination/pagination";
 import softDeletePlugin from "../../../utils/database/mongoose/plugin/softDelete/softDelete";
 import { ISoftDeleteModel } from "../../../utils/database/mongoose/plugin/softDelete/softDeleteModel";
 import encriptPassword from "../../../utils/database/mongoose/plugin/encriptPassword/encriptPassword";
@@ -52,6 +53,7 @@ const userSchema = new Schema<IUsers>(
 
 userSchema.plugin(encriptPassword);
 userSchema.plugin(softDeletePlugin);
+userSchema.plugin(paginationPlugin);
 
 const Users = model<
   IUsers,

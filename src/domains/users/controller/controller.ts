@@ -9,13 +9,13 @@ class UserController {
   public async update(req: IRequest, res: IResponse) {
     const { email, username, password } = req.body;
 
-    const user = await Users.findByIdAndUpdate(req.user._id, {
+    const userUpdate = await Users.findByIdAndUpdate(req.user._id, {
       email,
       username,
       password,
     });
 
-    res.json({ user });
+    res.json({ user: userUpdate });
   }
 
   public async list(req: IRequest, res: IResponse) {
@@ -26,7 +26,9 @@ class UserController {
       .limit(Number(limit) || 10)
       .skip(Number(skip) || 0);
 
-    res.json({ user });
+    const totalUsers = await Users.countDocuments();
+
+    res.json(user);
   }
 }
 
