@@ -4,7 +4,7 @@ class ErrorHandler {
     const message: any = err.message || "Something went wrong";
     const path = err.path;
 
-    if (env("NODE_ENV", "development") !== "production") {
+    if (!["production", "stageing"].includes(env("NODE_ENV", "development"))) {
       console.error(err);
     }
 
