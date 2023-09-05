@@ -2,14 +2,18 @@ class Validator {
   static required = (value: any): boolean =>
     value !== undefined && value !== null && value !== "";
 
-  static isEmail = (value: any): boolean =>
-    Boolean(
+  static isEmail = (value: any): boolean => {
+    const emailRegex = [
+      '/^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|',
+      '(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.',
+      "[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/",
+    ];
+    return Boolean(
       String(value)
         .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
+        .match(new RegExp(emailRegex.join("")))
     );
+  };
 
   static isUrl = (url: any): boolean =>
     Boolean(
