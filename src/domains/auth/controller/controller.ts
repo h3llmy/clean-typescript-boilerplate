@@ -23,6 +23,9 @@ class AuthController {
     if (checkUser?.emailVerified) {
       throw Exception.badRequest("user already exists");
     }
+    if (checkUser?.emailVerified === false) {
+      await checkUser.deleteOne();
+    }
 
     const newUser = await Users.create({
       email,
@@ -94,9 +97,10 @@ class AuthController {
       throw Exception.badRequest();
     }
 
-    const user = await Users.findById(decodedToken._id).orFail(
-      Exception.unauthorized()
-    );
+    const user = await Users.findOne({
+      _id: decodedToken._id,
+      emailVerified: false,
+    }).orFail(Exception.unauthorized("user not found"));
 
     if (!user.matchOtp(otp)) {
       user.validator++;
