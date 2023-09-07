@@ -1,10 +1,10 @@
 import Mail from "../../../services/mailler/mailler";
-import Users from "../../users/model/model";
 import Random from "../../../services/random/random";
 import AuthToken from "../../../services/authToken/jwt";
 import RegistrationOtp from "../../../services/mailler/views/registrationOtp";
 import ResetPassword from "../../../services/mailler/views/resetPassword";
-import { IAuthToken } from "../interface/authTokenInterface";
+import { IAuthToken } from "../interface/interface";
+import UserService from "../../users/service/service";
 
 class AuthController {
   public async register(req: IRequest, res: IResponse) {
@@ -16,18 +16,16 @@ class AuthController {
 
     const otp = new Random().stringNumber(6);
 
-    const checkUser = await Users.findOne({
-      $or: [{ email }, { username }],
-    });
+    const checkUser = await UserService.findByEmailOrUsername(email, username);
 
     if (checkUser?.emailVerified) {
       throw Exception.badRequest("user already exists");
     }
     if (checkUser?.emailVerified === false) {
-      await checkUser.deleteOne();
+      await UserService.delete(checkUser);
     }
 
-    const newUser = await Users.create({
+    const newUser = await UserService.create({
       email,
       username,
       password,
@@ -49,7 +47,7 @@ class AuthController {
       .subject("registration otp")
       .html(RegistrationOtp, { otp });
 
-    res.json({ token });
+    res.json({ token, otp });
   }
 
   public async resendOtp(req: IRequest, res: IResponse) {
@@ -61,16 +59,13 @@ class AuthController {
       throw Exception.badRequest("invalid token");
     }
 
-    const user = await Users.findById(decodedToken._id).orFail(
-      Exception.unauthorized("user not found")
-    );
+    const user = await UserService.findById(decodedToken._id);
 
     if (user.emailVerified) {
       throw Exception.badRequest("user already register");
     }
 
-    user.otp = newOtp;
-    user.save();
+    await UserService.updateOtp(user, newOtp);
 
     const tokenEmail = AuthToken.encode(
       {
@@ -97,10 +92,12 @@ class AuthController {
       throw Exception.badRequest();
     }
 
-    const user = await Users.findOne({
+    const user = await UserService.findOneOrFail({
       _id: decodedToken._id,
       emailVerified: false,
-    }).orFail(Exception.unauthorized("user not found"));
+    });
+
+    // await UserService.matchOtp(user, otp);
 
     if (!user.matchOtp(otp)) {
       user.validator++;
@@ -116,10 +113,7 @@ class AuthController {
       });
     }
 
-    user.emailVerified = true;
-    user.otp = undefined;
-    user.validator = undefined;
-    user.save();
+    await UserService.updateVerified(user);
 
     res.json({ message: "account sucsses to verifid" });
   }
@@ -127,13 +121,12 @@ class AuthController {
   public async login(req: IRequest, res: IResponse) {
     const { username, password } = req.body;
 
-    const user = await Users.findOne({ username, emailVerified: true }).orFail(
-      Exception.unauthorized()
-    );
+    const user = await UserService.findOneOrFail({
+      username,
+      emailVerified: true,
+    });
 
-    if (!user.matchPassword(password)) {
-      throw Exception.unauthorized();
-    }
+    UserService.matchPassword(user, password);
 
     const accessToken = AuthToken.encode(
       {
@@ -156,9 +149,10 @@ class AuthController {
 
   public async forgetPassword(req: IRequest, res: IResponse) {
     const { email, url } = req.body;
-    const user = await Users.findOne({ email, emailVerified: true }).orFail(
-      Exception.unauthorized()
-    );
+    const user = await UserService.findOneOrFail({
+      email,
+      emailVerified: true,
+    });
 
     const tokenReset = AuthToken.encode(
       {
@@ -189,13 +183,12 @@ class AuthController {
       throw Exception.unauthorized("invalid token");
     }
 
-    const user = await Users.findOne({
+    const user = await UserService.findOneOrFail({
       _id: decodedToken._id,
       emailVerified: true,
-    }).orFail(Exception.badRequest("user not found"));
+    });
 
-    user.password = newPassword;
-    user.save();
+    await UserService.updatePassword(user, newPassword);
 
     res.json({ message: "password has been updated" });
   }
@@ -208,9 +201,7 @@ class AuthController {
       throw Exception.unauthorized();
     }
 
-    const user = await Users.findById(decodedToken._id).orFail(
-      Exception.unauthorized()
-    );
+    const user = await UserService.findById(decodedToken._id);
 
     const accessToken = AuthToken.encode(
       {

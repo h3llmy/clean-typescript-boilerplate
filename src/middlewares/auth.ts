@@ -1,6 +1,6 @@
 import AuthToken from "../services/authToken/jwt";
 import Users from "../domains/users/model/model";
-import { IAuthToken } from "domains/auth/interface/authTokenInterface";
+import { IAuthToken } from "domains/auth/interface/interface";
 
 class AuthMiddleware {
   static async auth(req: IRequest, res: IResponse, next: INext) {

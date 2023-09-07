@@ -1,15 +1,16 @@
-import Users from "../model/model";
+import UserService from "../../users/service/service";
 
 class UserController {
   public async detail(req: IRequest, res: IResponse) {
-    const user = await Users.findById(req.user._id).select("-password");
+    const user = await UserService.findById(req.user._id);
+
     res.json({ user });
   }
 
   public async update(req: IRequest, res: IResponse) {
     const { email, username, password } = req.body;
 
-    const userUpdate = await Users.findByIdAndUpdate(req.user._id, {
+    const userUpdate = await UserService.findByIdAndUpdate(req.user._id, {
       email,
       username,
       password,
@@ -19,16 +20,18 @@ class UserController {
   }
 
   public async list(req: IRequest, res: IResponse) {
-    const { limit, skip, emailVerified } = req.query;
+    const { limit, page } = req.query;
 
-    const user = await Users.find()
-      .select("-password -otp")
-      .limit(Number(limit) || 10)
-      .skip(Number(skip) || 0);
+    const [user, totalPage] = await Promise.all([
+      UserService.findAndPaginate(Number(page), Number(limit)),
+      UserService.countPage(Number(limit)),
+    ]);
 
-    const totalUsers = await Users.countDocuments();
-
-    res.json(user);
+    res.json({
+      totalPage,
+      currentPage: Number(page) || 1,
+      list: user,
+    });
   }
 }
 
