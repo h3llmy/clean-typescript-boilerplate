@@ -47,7 +47,7 @@ class AuthController {
       .subject("registration otp")
       .html(RegistrationOtp, { otp });
 
-    res.json({ token, otp });
+    res.json({ token });
   }
 
   public async resendOtp(req: IRequest, res: IResponse) {
@@ -65,7 +65,7 @@ class AuthController {
       throw Exception.badRequest("user already register");
     }
 
-    await UserService.updateOtp(user, newOtp);
+    await UserService.updateOtp(user._id, newOtp);
 
     const tokenEmail = AuthToken.encode(
       {
@@ -89,29 +89,13 @@ class AuthController {
 
     const decodedToken = AuthToken.decode(token) as IAuthToken;
     if (decodedToken.type !== "register") {
-      throw Exception.badRequest();
+      throw Exception.badRequest("invalid token");
     }
 
-    const user = await UserService.findOneOrFail({
-      _id: decodedToken._id,
-      emailVerified: false,
-    });
-
-    // await UserService.matchOtp(user, otp);
-
-    if (!user.matchOtp(otp)) {
-      user.validator++;
-      if (user.validator >= 3) {
-        user.deleteOne();
-        throw Exception.badRequest("invalid otp", {
-          body: { otp: "you enter an invalid otp 3 times" },
-        });
-      }
-      await user.save();
-      throw Exception.badRequest("invalid otp", {
-        body: { otp: "otp not match! please try again" },
-      });
-    }
+    const user = await UserService.matchOtp(
+      { _id: decodedToken._id, emailVerified: false },
+      otp
+    );
 
     await UserService.updateVerified(user);
 
@@ -121,12 +105,13 @@ class AuthController {
   public async login(req: IRequest, res: IResponse) {
     const { username, password } = req.body;
 
-    const user = await UserService.findOneOrFail({
-      username,
-      emailVerified: true,
-    });
-
-    UserService.matchPassword(user, password);
+    const user = await UserService.matchPassword(
+      {
+        username,
+        emailVerified: true,
+      },
+      password
+    );
 
     const accessToken = AuthToken.encode(
       {
@@ -183,12 +168,10 @@ class AuthController {
       throw Exception.unauthorized("invalid token");
     }
 
-    const user = await UserService.findOneOrFail({
-      _id: decodedToken._id,
-      emailVerified: true,
-    });
-
-    await UserService.updatePassword(user, newPassword);
+    await UserService.updatePassword(
+      { _id: decodedToken._id, emailVerified: true },
+      newPassword
+    );
 
     res.json({ message: "password has been updated" });
   }
@@ -220,6 +203,15 @@ class AuthController {
     );
 
     res.json({ accessToken, refreshToken: newRefreshToken });
+  }
+
+  public async test(req: IRequest, res: IResponse) {
+    const user = await UserService.updateOtp(
+      "64fc4aa18686d888fa0a0a4a",
+      new Random().stringNumber()
+    );
+    const users = await UserService.findAndPaginate();
+    res.json(users);
   }
 }
 

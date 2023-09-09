@@ -4,8 +4,6 @@ import Users from "../model/model";
 
 class UserService {
   static async create(userPayload: any) {
-    console.log(userPayload);
-
     return await Users.create(userPayload);
   }
 
@@ -50,29 +48,52 @@ class UserService {
   }
 
   static async findByIdAndUpdate(id: string, userPayload: Partial<IUsers>) {
-    console.log(userPayload);
-
-    return await Users.findByIdAndUpdate(id, userPayload);
+    return await Users.findByIdAndUpdate(
+      id,
+      { $set: userPayload },
+      { new: true }
+    );
   }
 
-  static async updateOtp(user: IUsers, otp: string) {
-    return await Users.findByIdAndUpdate(user._id, { otp });
+  static async updateOtp(id: string, otp: string) {
+    const user = await Users.findById(id)
+      .select("-password")
+      .orFail(Exception.unauthorized("user not found"));
+    user.otp = otp;
+    user.save();
+    return user;
   }
 
-  static async updatePassword(user: IUsers, password: string) {
-    return await Users.findByIdAndUpdate(user._id, { password });
+  static async updatePassword(filter: FilterQuery<IUsers>, password: string) {
+    const user = await Users.findOne(filter)
+      .select("-otp")
+      .orFail(Exception.unauthorized("user not found"));
+    user.password = password;
+    user.save();
+    return user;
   }
 
   static async updateVerified(user: IUsers) {
-    return await Users.findByIdAndUpdate(user._id, {
-      emailVerified: true,
-      otp: undefined,
-      validator: undefined,
-    });
+    return await Users.findByIdAndUpdate(
+      user._id,
+      {
+        $set: {
+          emailVerified: true,
+        },
+        $unset: {
+          otp: 1,
+          validator: 1,
+        },
+      },
+      { new: true }
+    );
   }
 
-  static async matchOtp(user: IUsers, otp: string) {
-    if (!(user as any).matchOtp(otp)) {
+  static async matchOtp(filter: FilterQuery<IUsers>, otp: string) {
+    const user = await Users.findOne(filter)
+      .select("-password")
+      .orFail(Exception.unauthorized("user not found"));
+    if (!user.matchOtp(otp)) {
       user.validator++;
       if (user.validator >= 3) {
         user.deleteOne();
@@ -85,12 +106,17 @@ class UserService {
         body: { otp: "otp not match! please try again" },
       });
     }
+    return user;
   }
 
-  static matchPassword(user: IUsers, password: string) {
-    if (!(user as any).matchPassword(password)) {
+  static async matchPassword(filter: FilterQuery<IUsers>, password: string) {
+    const user = await Users.findOne(filter)
+      .select("-otp")
+      .orFail(Exception.unauthorized("user not found"));
+    if (!user.matchPassword(password)) {
       throw Exception.unauthorized();
     }
+    return user;
   }
 
   static async delete(user: IUsers) {
