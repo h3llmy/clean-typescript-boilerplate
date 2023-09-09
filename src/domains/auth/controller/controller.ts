@@ -204,15 +204,6 @@ class AuthController {
 
     res.json({ accessToken, refreshToken: newRefreshToken });
   }
-
-  public async test(req: IRequest, res: IResponse) {
-    const user = await UserService.updateOtp(
-      "64fc4aa18686d888fa0a0a4a",
-      new Random().stringNumber()
-    );
-    const users = await UserService.findAndPaginate();
-    res.json(users);
-  }
 }
 
 export default AuthController;
