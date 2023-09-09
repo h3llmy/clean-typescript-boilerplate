@@ -1,6 +1,5 @@
 todo list:
+add nginx
+add kubernetis
 
 bug:
-    eslint:
-        C:\Users\helmy\Desktop\testing iseng\typescript boilerplate\src\utils\http\validation\validator.ts
-            10:1  error  This line has a length of 161. Maximum allowed is 130  max-len  

@@ -42,6 +42,8 @@ class AuthRoute extends Route {
       this.validator.refreshToken(),
       this.controller.refreshToken
     );
+
+    this.get("/test", this.controller.test);
   }
 }
 
