@@ -3,7 +3,7 @@ import IUsers from "../interface/interface";
 import Users from "../model/model";
 
 class UserService {
-  static async create(userPayload: any) {
+  static async create(userPayload: Partial<IUsers>) {
     return await Users.create(userPayload);
   }
 

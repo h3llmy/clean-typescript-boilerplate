@@ -19,7 +19,7 @@ class Validation {
   };
 
   public validate = (
-    validators: ValidateChain[] | FileValidateChain[],
+    validators: (ValidateChain | FileValidateChain)[],
     options: { returnOnlyValidated: boolean } = { returnOnlyValidated: true }
   ): IRequestHandler => {
     return (req: IRequest, res: IResponse, next: INext) => {
