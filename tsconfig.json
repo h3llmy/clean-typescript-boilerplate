@@ -9,5 +9,9 @@
     "baseUrl": "./src"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "src/utils/commandFunction"]
+  "exclude": [
+    "node_modules",
+    "src/utils/commandFunction",
+    "src/domains/**/*.test.ts"
+  ]
 }

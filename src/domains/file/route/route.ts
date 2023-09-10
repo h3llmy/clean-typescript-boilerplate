@@ -20,6 +20,8 @@ class FileRoute extends Route {
       this.validator.create(),
       this.controller.create
     );
+    this.get("/", this.permission("authenticated"), this.controller.list);
+    this.get("/:mimeType/:fileName", this.controller.getFIle);
   }
 }
 

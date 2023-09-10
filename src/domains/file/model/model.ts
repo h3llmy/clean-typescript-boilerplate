@@ -13,6 +13,15 @@ const fileSchema = new Schema<IFile>(
     name: {
       type: String,
       required: true,
+      unique: true,
+    },
+    mimeType: {
+      type: String,
+      required: true,
+    },
+    size: {
+      type: Number,
+      required: true,
     },
     ownerId: {
       type: Schema.Types.ObjectId,

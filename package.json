@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon -e ts,tsx,json --exec ts-node ./src/server.ts",
     "build": "tsc",
+    "obfuscate": "javascript-obfuscator -o dist --exclude='node_modules'",
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "lint": "eslint . --ext .ts",
     "test": "jest --watchAll --detectOpenHandles",

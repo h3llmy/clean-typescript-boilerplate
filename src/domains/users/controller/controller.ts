@@ -20,16 +20,17 @@ class UserController {
   }
 
   public async list(req: IRequest, res: IResponse) {
-    const { limit, page } = req.query;
+    const page = parseInt(String(req.query.page)) || 1;
+    const limit = parseInt(String(req.query.limit)) || 10;
 
     const [user, totalPage] = await Promise.all([
-      UserService.findAndPaginate(Number(page), Number(limit)),
-      UserService.countPage(Number(limit)),
+      UserService.findAndPaginate(page, limit),
+      UserService.countPage(limit),
     ]);
 
     res.json({
       totalPage,
-      currentPage: Number(page) || 1,
+      currentPage: page || 1,
       list: user,
     });
   }

@@ -12,6 +12,13 @@ class FileValidator extends Validation {
       this.files("files").required(),
     ]);
   }
+
+  public list() {
+    return this.validate([
+      this.query("limit").isNumber(),
+      this.query("skip").isNumber(),
+    ]);
+  }
 }
 
 export default FileValidator;
