@@ -1,14 +1,19 @@
-import { FilterQuery, ObjectId } from "mongoose";
+import { ObjectId } from "mongoose";
 import IFile, { FileStatus } from "../interface/interface";
 import File from "../model/model";
+import fileDirectory from "../../../config/fileDirectory";
+import * as fs from "fs";
+import * as path from "path";
 
 class FileService {
   static async create(filePayload: Partial<IFile> | Partial<IFile>[]) {
     return await File.create(filePayload);
   }
 
-  static async findByNameAndMimeType(name: string) {
-    return await File.findOne({ name });
+  static async findByName(name: string) {
+    return await File.findOne({ name }).orFail(
+      Exception.notFound(`file ${name} not found`)
+    );
   }
 
   static createFileData(
@@ -74,6 +79,15 @@ class FileService {
         })) / limit
       ) || 1
     );
+  }
+
+  static getDirectory(mimeType: string, fileName: string) {
+    const filePath = `./${fileDirectory.directory}/${mimeType}/${fileName}`;
+    if (!fs.existsSync(filePath)) {
+      throw Exception.notFound(`file ${fileName} not found`);
+    }
+
+    return path.resolve(filePath);
   }
 }
 

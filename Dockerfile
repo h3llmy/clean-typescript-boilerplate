@@ -11,14 +11,13 @@ WORKDIR /usr/api
 COPY package*.json ./
 COPY --from=builder /usr/api/dist ./
 RUN npm i --save-dev javascript-obfuscator
-RUN npm run obfuscate
+RUN "javascript-obfuscator -o dist --exclude='node_modules'"
 
 FROM node:18-alpine
 WORKDIR /usr/api
 COPY --from=builder /usr/api/package*.json ./
 COPY --from=obfuscator /usr/api/dist ./dist
 COPY --from=builder /usr/api/ecosystem.config.json ./
-# COPY --from=builder /usr/api/.env.production ./
 RUN npm install --omit=dev
 RUN npm install pm2 -g
 

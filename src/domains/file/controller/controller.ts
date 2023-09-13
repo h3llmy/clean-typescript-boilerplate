@@ -1,8 +1,5 @@
 import IFile from "../interface/interface";
 import FileService from "../service/service";
-import fileDirectory from "../../../config/fileDirectory";
-import * as fs from "fs";
-import * as path from "path";
 
 class FileController {
   public async create(req: IRequest, res: IResponse) {
@@ -24,7 +21,8 @@ class FileController {
   public async getFIle(req: IRequest, res: IResponse) {
     const { mimeType, fileName } = req.params;
     const { user } = req;
-    const fileCheck = await FileService.findByNameAndMimeType(fileName);
+
+    const fileCheck = await FileService.findByName(fileName);
 
     switch (fileCheck.status) {
       case "onlyShared":
@@ -44,11 +42,7 @@ class FileController {
         break;
     }
 
-    const filePath = `./${fileDirectory.directory}/${mimeType}/${fileName}`;
-    if (!fs.existsSync(filePath)) {
-      throw Exception.notFound(`file ${fileName} not found`);
-    }
-    res.sendFile(path.resolve(filePath));
+    res.sendFile(FileService.getDirectory(mimeType, fileName));
   }
 
   public async list(req: IRequest, res: IResponse) {
@@ -78,6 +72,9 @@ class FileController {
   }
 
   // update sharedUser, update status,
+  public async updateSharedUser(req: IRequest, res: IResponse) {
+    res.json("aselole");
+  }
 }
 
 export default FileController;

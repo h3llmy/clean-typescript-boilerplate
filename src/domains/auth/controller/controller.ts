@@ -1,8 +1,8 @@
 import Mail from "../../../services/mailler/mailler";
 import Random from "../../../services/random/random";
 import AuthToken from "../../../services/authToken/jwt";
-import RegistrationOtp from "../../../services/mailler/views/registrationOtp";
-import ResetPassword from "../../../services/mailler/views/resetPassword";
+import RegistrationOtp from "../mail/registrationOtp";
+import ResetPassword from "../mail/resetPassword";
 import { IAuthToken } from "../interface/interface";
 import UserService from "../../users/service/service";
 

@@ -115,7 +115,12 @@ class App {
 
   private initializeControllers(routes: IRouter[]) {
     routes?.forEach((route) => {
-      this.app.use(`/api/v1${route.prefix || ""}/`, route.router);
+      this.app.use(
+        `/api/v${env("npm_package_version").split(".")[0]}${
+          route.prefix || ""
+        }/`,
+        route.router
+      );
     });
     this.app.use(`*`, (req, res) => {
       throw Exception.notFound();
