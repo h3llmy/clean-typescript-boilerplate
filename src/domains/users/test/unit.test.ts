@@ -75,7 +75,7 @@ describe("Service / user / findByEmailOrUsername", () => {
       "mantaps jiwa"
     );
     expect(user).toBeDefined();
-    expect(user.toObject()).toMatchObject({
+    expect(user?.toObject()).toMatchObject({
       email: "helmitrisna86@gmail.com",
       username: "mantaps jiwa",
       status: "user",
@@ -104,7 +104,7 @@ describe("Service / user / findOne", () => {
       username: "mantaps jiwa",
     });
     expect(user).toBeDefined();
-    expect(user.toObject()).toMatchObject({
+    expect(user?.toObject()).toMatchObject({
       email: "helmitrisna86@gmail.com",
       username: "mantaps jiwa",
       status: "user",
@@ -178,7 +178,7 @@ describe("Service / user / findByIdAndUpdate", () => {
       emailVerified: false,
     });
 
-    userSample = user;
+    userSample = user as IUsers;
   });
 });
 
@@ -239,10 +239,10 @@ describe("Service / user / updateVerified", () => {
     const user = await UserService.updateVerified(userSample);
 
     expect(user).toBeDefined();
-    expect(user.otp).not.toBeDefined();
-    expect(user.validator).toBe(0);
-    expect(user.emailVerified).toBe(true);
-    userSample = user;
+    expect(user?.otp).not.toBeDefined();
+    expect(user?.validator).toBe(0);
+    expect(user?.emailVerified).toBe(true);
+    userSample = user as IUsers;
   });
 });
 

@@ -8,7 +8,6 @@ import * as compression from "compression";
 import helmet from "helmet";
 import * as cors from "cors";
 import * as fileUpload from "express-fileupload";
-import publicDirectory from "../config/fileDirectory";
 import RenderReact from "../utils/viewEngine/reactToString";
 
 class App {
@@ -89,7 +88,6 @@ class App {
     this.app.use(express.json());
     this.app.use(compression());
     this.app.use(fileUpload());
-    this.app.use(express.static(publicDirectory.directory));
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
       res.view = async (component, data) => {
         res.send(await new RenderReact().toString(component, data));
@@ -117,7 +115,12 @@ class App {
 
   private initializeControllers(routes: IRouter[]) {
     routes?.forEach((route) => {
-      this.app.use(`/api/v1${route.prefix || ""}/`, route.router);
+      this.app.use(
+        `/api/v${env("npm_package_version").split(".")[0]}${
+          route.prefix || ""
+        }/`,
+        route.router
+      );
     });
     this.app.use(`*`, (req, res) => {
       throw Exception.notFound();

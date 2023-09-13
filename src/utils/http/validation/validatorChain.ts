@@ -86,8 +86,19 @@ class ValidateChain {
 
   public maxLength = (length: number): this => {
     this.rules.push({
-      validator: (value: any) => Validator.maxLength(value, length),
+      validator: (value: any) =>
+        value === undefined ||
+        value === null ||
+        Validator.maxLength(value, length),
       message: `${this.fieldName} max ${length} characters long`,
+    });
+    return this;
+  };
+
+  public enum = (option: any[]): this => {
+    this.rules.push({
+      validator: (value: any) => option.includes(value),
+      message: `${this.fieldName} must be ${option.toString()}`,
     });
     return this;
   };
