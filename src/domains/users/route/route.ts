@@ -5,7 +5,7 @@ import UserValidator from "../validator/validator";
 class UserRoute extends Route {
   protected controller = new UserController();
   protected validator = new UserValidator();
-  readonly prefix = "/user";
+  readonly prefix = "/users";
 
   constructor() {
     super();
@@ -18,9 +18,12 @@ class UserRoute extends Route {
     this.get(
       "/list",
       this.validator.list(),
-      this.permission("admin"),
+      // this.permission("admin"),
       this.controller.list
     );
+    this.post("/test", (req: IRequest, res: IResponse) => {
+      res.json(req.body);
+    });
   }
 }
 

@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import { UserStatus } from "../../users/interface/interface";
 
 export interface IAuthToken {
