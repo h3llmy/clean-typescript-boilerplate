@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon -e ts,tsx,json --exec ts-node ./src/server.ts",
+    "obfuscator": "javascript-obfuscator -o dist --exclude='node_modules'",
     "build": "tsc",
     "start": "pm2 start ecosystem.config.json --no-daemon",
     "lint": "eslint . --ext .ts",

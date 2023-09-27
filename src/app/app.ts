@@ -95,9 +95,7 @@ class App {
       next();
     });
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
-      process.env.asset = env("NODE_ENV", "development")
-        ? `${req.protocol}://${req.hostname}:${env("port")}`
-        : `${req.protocol}://${req.hostname}`;
+      process.env.asset = `${req.protocol}://${req.get("Host")}`;
       next();
     });
     this.app.use(

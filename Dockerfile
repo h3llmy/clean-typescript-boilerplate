@@ -11,7 +11,7 @@ WORKDIR /usr/api
 COPY package*.json ./
 COPY --from=builder /usr/api/dist ./
 RUN npm i --save-dev javascript-obfuscator
-RUN "javascript-obfuscator -o dist --exclude='node_modules'"
+RUN npm run obfuscator
 
 FROM node:18-alpine
 WORKDIR /usr/api

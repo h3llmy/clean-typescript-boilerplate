@@ -1,5 +1,0 @@
-todo list:
-add nginx
-add kubernetis
-
-bug:

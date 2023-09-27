@@ -60,7 +60,7 @@ class UserService {
       .select("-password")
       .orFail(Exception.unauthorized("user not found"));
     user.otp = otp;
-    user.save();
+    await user.save();
     return user;
   }
 
@@ -69,7 +69,7 @@ class UserService {
       .select("-otp")
       .orFail(Exception.unauthorized("user not found"));
     user.password = password;
-    user.save();
+    await user.save();
     return user;
   }
 

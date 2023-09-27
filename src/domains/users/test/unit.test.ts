@@ -182,16 +182,6 @@ describe("Service / user / findByIdAndUpdate", () => {
   });
 });
 
-describe("Service / user / matchPassword", () => {
-  it("should matching user password", async () => {
-    const user = await UserService.matchPassword(
-      { _id: userSample._id },
-      "mantap"
-    );
-    expect(user).toBeDefined();
-  });
-});
-
 describe("Service / user / updatePassword", () => {
   it("should update user password", async () => {
     const user = await UserService.updatePassword(
@@ -211,9 +201,12 @@ describe("Service / user / updatePassword", () => {
   });
 });
 
-describe("Service / user / matchOtp", () => {
-  it("should matching user otp", async () => {
-    const user = await UserService.matchOtp({ _id: userSample._id }, "12312");
+describe("Service / user / matchPassword", () => {
+  it("should matching user password", async () => {
+    const user = await UserService.matchPassword(
+      { _id: userSample._id },
+      "12345"
+    );
     expect(user).toBeDefined();
   });
 });
@@ -231,6 +224,13 @@ describe("Service / user / updateOtp", () => {
       emailVerified: false,
     });
     userSample = user;
+  });
+});
+
+describe("Service / user / matchOtp", () => {
+  it("should matching user otp", async () => {
+    const user = await UserService.matchOtp({ _id: userSample._id }, "12345");
+    expect(user).toBeDefined();
   });
 });
 
