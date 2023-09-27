@@ -9,6 +9,8 @@ services:
       - 27017:27017
     env_file:
       - .env.production
+    volumes:
+      - /path/to/mongo/data:/data/db
 
   api:
     container_name: api
@@ -20,3 +22,13 @@ services:
       - mongo
     env_file:
       - .env.production
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api
