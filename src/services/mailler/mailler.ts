@@ -63,8 +63,8 @@ class Mail {
   private async send(): Promise<boolean> {
     try {
       if (Array.isArray(this.emailOptions.to)) {
-        this.emailOptions.to.forEach((emailTo: string) => {
-          this.transporter.sendMail(emailTo);
+        this.emailOptions.to.forEach(() => {
+          this.transporter.sendMail(this.emailOptions);
         });
       } else {
         await this.transporter.sendMail(this.emailOptions);
