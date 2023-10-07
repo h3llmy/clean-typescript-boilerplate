@@ -48,18 +48,18 @@ class FileController {
   }
 
   public async list(req: IRequest, res: IResponse) {
-    const { user } = req;
-    const page = parseInt(String(req.query.page)) || 1;
-    const limit = parseInt(String(req.query.limit)) || 10;
+    const { user, query } = req;
+    const page = parseInt(String(query.page)) || 1;
+    const limit = parseInt(String(query.limit)) || 10;
 
     const [files, totalPage] = await Promise.all([
       FileService.findByOwnerIdOrSharedUserWithPaginate(
         user._id,
         page,
         limit,
-        req.query
+        query
       ),
-      FileService.countPageByOwnerIdOrSharedUser(limit, user._id, req.query),
+      FileService.countPageByOwnerIdOrSharedUser(limit, user._id, query),
     ]);
 
     files.forEach((file) => {
@@ -75,11 +75,9 @@ class FileController {
 
   // update status,
   public async updateSharedUser(req: IRequest, res: IResponse) {
-    const {
-      params: { fileId },
-      body: { sharedUser },
-      user: { _id },
-    } = req;
+    const { fileId } = req.params;
+    const { sharedUser } = req.body;
+    const { _id } = req.user;
 
     const [_, file] = await Promise.all([
       UserService.checkUserIsAvilable(sharedUser),
