@@ -37,6 +37,9 @@ class Validator {
     value === null ||
     typeof Boolean(value) === "boolean";
 
+  static isArray = (value: any): boolean =>
+    value === undefined || value === null || Array.isArray(value);
+
   static minLength = (value: any, length: number): boolean => {
     if (typeof value === "string") {
       return value.length >= length;

@@ -22,7 +22,12 @@ class FileRoute extends Route {
     );
     this.get("/", this.permission("authenticated"), this.controller.list);
     this.get("/:mimeType/:fileName", this.controller.getFIle);
-    this.put("/update-shared-user/:fileId", this.controller.updateSharedUser);
+    this.put(
+      "/update-shared-user/:fileId",
+      this.permission("authenticated"),
+      this.validator.updateSharedUser(),
+      this.controller.updateSharedUser
+    );
   }
 }
 

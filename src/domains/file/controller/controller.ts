@@ -1,5 +1,7 @@
+import { ObjectId } from "mongoose";
 import IFile from "../interface/interface";
 import FileService from "../service/service";
+import UserService from "../../../domains/users/service/service";
 
 class FileController {
   public async create(req: IRequest, res: IResponse) {
@@ -71,9 +73,24 @@ class FileController {
     });
   }
 
-  // update sharedUser, update status,
+  // update status,
   public async updateSharedUser(req: IRequest, res: IResponse) {
-    res.json("aselole");
+    const {
+      params: { fileId },
+      body: { sharedUser },
+      user: { _id },
+    } = req;
+
+    const [_, file] = await Promise.all([
+      UserService.checkUserIsAvilable(sharedUser),
+      FileService.updateSharedUser(
+        fileId as unknown as ObjectId,
+        _id,
+        sharedUser
+      ),
+    ]);
+
+    res.json(file);
   }
 }
 

@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, ObjectId } from "mongoose";
 import IUsers from "../interface/interface";
 import Users from "../model/model";
 
@@ -117,6 +117,16 @@ class UserService {
       throw Exception.unauthorized();
     }
     return user;
+  }
+
+  static async checkUserIsAvilable(userId: ObjectId[]) {
+    const userFind = await Users.find({ _id: { $in: userId } }).select("_id");
+    const foundIds = userFind.map((doc) => doc._id.toString());
+    const notFoundIds = userId.filter((id) => !foundIds.includes(id));
+
+    if (notFoundIds.length > 0) {
+      throw Exception.badRequest(`IDs not found: ${notFoundIds.join(", ")}`);
+    }
   }
 
   static async delete(user: IUsers) {
