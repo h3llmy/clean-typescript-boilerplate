@@ -20,8 +20,9 @@ class UserController {
   }
 
   public async list(req: IRequest, res: IResponse) {
-    const page = parseInt(String(req.query.page)) || 1;
-    const limit = parseInt(String(req.query.limit)) || 10;
+    const { query } = req;
+    const page = parseInt(String(query.page)) || 1;
+    const limit = parseInt(String(query.limit)) || 10;
 
     const [user, totalPage] = await Promise.all([
       UserService.findAndPaginate(page, limit),

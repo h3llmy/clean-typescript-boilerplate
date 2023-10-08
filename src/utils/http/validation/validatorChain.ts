@@ -22,7 +22,13 @@ class ValidateChain {
 
   public isString = (): this => {
     this.rules.push({
-      validator: Validator.isString,
+      validator: (value: any) => {
+        if (Array.isArray(value)) {
+          return value.some((val) => Validator.isString(val));
+        } else {
+          return Validator.isString(value);
+        }
+      },
       message: `${this.fieldName} must be a string`,
     });
     return this;
@@ -30,7 +36,13 @@ class ValidateChain {
 
   public isIdPhone = (): this => {
     this.rules.push({
-      validator: Validator.isIdPhone,
+      validator: (value: any) => {
+        if (Array.isArray(value)) {
+          return value.some((val) => Validator.isIdPhone(val));
+        } else {
+          return Validator.isIdPhone(value);
+        }
+      },
       message: `${this.fieldName} must be an id phone number`,
     });
     return this;
@@ -38,7 +50,13 @@ class ValidateChain {
 
   public isNumber = (): this => {
     this.rules.push({
-      validator: Validator.isNumber,
+      validator: (value: any) => {
+        if (Array.isArray(value)) {
+          return value.some((val) => Validator.isNumber(val));
+        } else {
+          return Validator.isNumber(value);
+        }
+      },
       message: `${this.fieldName} must be a number`,
     });
     return this;
@@ -46,7 +64,13 @@ class ValidateChain {
 
   public isEmail = (): this => {
     this.rules.push({
-      validator: Validator.isEmail,
+      validator: (value: any) => {
+        if (Array.isArray(value)) {
+          return value.some((val) => Validator.isEmail(val));
+        } else {
+          return Validator.isEmail(value);
+        }
+      },
       message: `${this.fieldName} must be an email`,
     });
     return this;
@@ -54,7 +78,13 @@ class ValidateChain {
 
   public isUrl = (): this => {
     this.rules.push({
-      validator: Validator.isUrl,
+      validator: (value: any) => {
+        if (Array.isArray(value)) {
+          return value.some((val) => Validator.isUrl(val));
+        } else {
+          return Validator.isUrl(value);
+        }
+      },
       message: `${this.fieldName} must be an url`,
     });
     return this;
@@ -62,7 +92,13 @@ class ValidateChain {
 
   public isBoolean(): this {
     this.rules.push({
-      validator: Validator.isBoolean,
+      validator: (value: any) => {
+        if (Array.isArray(value)) {
+          return value.some((val) => Validator.isBoolean(val));
+        } else {
+          return Validator.isBoolean(value);
+        }
+      },
       message: `${this.fieldName} must be an boolean`,
     });
     return this;
@@ -70,8 +106,22 @@ class ValidateChain {
 
   public isObjectId = (): this => {
     this.rules.push({
-      validator: (value: any) => isValidObjectId(value),
+      validator: (value: any) => {
+        if (Array.isArray(value)) {
+          return value.some((val) => isValidObjectId(val));
+        } else {
+          return isValidObjectId(value);
+        }
+      },
       message: `${this.fieldName} must be an object id`,
+    });
+    return this;
+  };
+
+  public isArray = (): this => {
+    this.rules.push({
+      validator: Validator.isArray,
+      message: `${this.fieldName} must be an array`,
     });
     return this;
   };

@@ -1,7 +1,13 @@
 import IUsers from "domains/users/interface/interface";
 
+interface IAuthConfig {
+  permissionField: string;
+  encriptedField: string;
+  validationField: string;
+}
+
 export default {
   permissionField: "status",
   encriptedField: ["password", "otp"],
   validationField: "validator",
-} satisfies Record<string, keyof IUsers | (keyof IUsers)[]>;
+} satisfies Record<keyof IAuthConfig, keyof IUsers | (keyof IUsers)[]>;

@@ -1,5 +1,7 @@
+import { ObjectId } from "mongoose";
 import IFile from "../interface/interface";
 import FileService from "../service/service";
+import UserService from "../../../domains/users/service/service";
 
 class FileController {
   public async create(req: IRequest, res: IResponse) {
@@ -27,14 +29,16 @@ class FileController {
     switch (fileCheck.status) {
       case "onlyShared":
         if (
-          !fileCheck.ownerId === user?._id ||
-          !fileCheck.sharedUser.includes(user?._id)
+          String(fileCheck.ownerId) !== String(user._id) ||
+          !fileCheck.sharedUser
+            .map((userAccess) => String(userAccess))
+            .includes(String(user._id))
         ) {
           throw Exception.forbidden();
         }
         break;
       case "private":
-        if (!user || !fileCheck.ownerId === user?._id) {
+        if (!user || String(fileCheck.ownerId) !== String(user._id)) {
           throw Exception.forbidden();
         }
         break;
@@ -46,18 +50,18 @@ class FileController {
   }
 
   public async list(req: IRequest, res: IResponse) {
-    const { user } = req;
-    const page = parseInt(String(req.query.page)) || 1;
-    const limit = parseInt(String(req.query.limit)) || 10;
+    const { user, query } = req;
+    const page = parseInt(String(query.page)) || 1;
+    const limit = parseInt(String(query.limit)) || 10;
 
     const [files, totalPage] = await Promise.all([
       FileService.findByOwnerIdOrSharedUserWithPaginate(
         user._id,
         page,
         limit,
-        req.query
+        query
       ),
-      FileService.countPageByOwnerIdOrSharedUser(limit, user._id, req.query),
+      FileService.countPageByOwnerIdOrSharedUser(limit, user._id, query),
     ]);
 
     files.forEach((file) => {
@@ -71,9 +75,35 @@ class FileController {
     });
   }
 
-  // update sharedUser, update status,
   public async updateSharedUser(req: IRequest, res: IResponse) {
-    res.json("aselole");
+    const { fileId } = req.params;
+    const { sharedUser } = req.body;
+    const { _id } = req.user;
+
+    const [_, file] = await Promise.all([
+      UserService.checkUserIsAvilable(sharedUser),
+      FileService.updateSharedUser(
+        fileId as unknown as ObjectId,
+        _id,
+        sharedUser
+      ),
+    ]);
+
+    res.json(file);
+  }
+
+  public async updateStatus(req: IRequest, res: IResponse) {
+    const { id } = req.params;
+    const { status } = req.body;
+    const { _id } = req.user;
+
+    const file = await FileService.updateStatus(
+      id as unknown as ObjectId,
+      _id,
+      status
+    );
+
+    res.json(file);
   }
 }
 

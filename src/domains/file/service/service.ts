@@ -89,6 +89,36 @@ class FileService {
 
     return path.resolve(filePath);
   }
+
+  static async updateSharedUser(
+    _id: ObjectId,
+    ownerId: ObjectId,
+    sharedUser: ObjectId[]
+  ) {
+    if (sharedUser.map((user) => String(user)).includes(String(ownerId))) {
+      throw Exception.badRequest("can't shared file to owner");
+    }
+    const file = await File.findOneAndUpdate(
+      { _id, ownerId },
+      { $set: { sharedUser } },
+      { new: true }
+    ).orFail(Exception.badRequest("file not found"));
+    return file;
+  }
+
+  static async updateStatus(
+    _id: ObjectId,
+    ownerId: ObjectId,
+    status: FileStatus
+  ) {
+    const file = await File.findOneAndUpdate(
+      { _id, ownerId },
+      { $set: { status } },
+      { $new: true }
+    ).orFail(Exception.notFound("file not found"));
+
+    return file;
+  }
 }
 
 export default FileService;
