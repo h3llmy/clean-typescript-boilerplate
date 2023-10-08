@@ -28,6 +28,12 @@ class FileRoute extends Route {
       this.validator.updateSharedUser(),
       this.controller.updateSharedUser
     );
+    this.put(
+      "/update-status/:id",
+      this.permission("authenticated"),
+      this.validator.updateStatus(),
+      this.controller.updateStatus
+    );
   }
 }
 

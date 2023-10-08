@@ -21,6 +21,15 @@ class FileValidator extends Validation {
       this.body("sharedUser").required().isArray().isObjectId(),
     ]);
   }
+
+  public updateStatus() {
+    return this.validate([
+      this.body("status")
+        .required()
+        .isString()
+        .enum(["public", "private", "onlyShared"]),
+    ]);
+  }
 }
 
 export default FileValidator;

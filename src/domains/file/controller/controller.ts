@@ -29,14 +29,16 @@ class FileController {
     switch (fileCheck.status) {
       case "onlyShared":
         if (
-          !fileCheck.ownerId === user?._id ||
-          !fileCheck.sharedUser.includes(user?._id)
+          String(fileCheck.ownerId) !== String(user._id) ||
+          !fileCheck.sharedUser
+            .map((userAccess) => String(userAccess))
+            .includes(String(user._id))
         ) {
           throw Exception.forbidden();
         }
         break;
       case "private":
-        if (!user || !fileCheck.ownerId === user?._id) {
+        if (!user || String(fileCheck.ownerId) !== String(user._id)) {
           throw Exception.forbidden();
         }
         break;
@@ -73,7 +75,6 @@ class FileController {
     });
   }
 
-  // update status,
   public async updateSharedUser(req: IRequest, res: IResponse) {
     const { fileId } = req.params;
     const { sharedUser } = req.body;
@@ -87,6 +88,20 @@ class FileController {
         sharedUser
       ),
     ]);
+
+    res.json(file);
+  }
+
+  public async updateStatus(req: IRequest, res: IResponse) {
+    const { id } = req.params;
+    const { status } = req.body;
+    const { _id } = req.user;
+
+    const file = await FileService.updateStatus(
+      id as unknown as ObjectId,
+      _id,
+      status
+    );
 
     res.json(file);
   }

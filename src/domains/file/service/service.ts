@@ -105,6 +105,20 @@ class FileService {
     ).orFail(Exception.badRequest("file not found"));
     return file;
   }
+
+  static async updateStatus(
+    _id: ObjectId,
+    ownerId: ObjectId,
+    status: FileStatus
+  ) {
+    const file = await File.findOneAndUpdate(
+      { _id, ownerId },
+      { $set: { status } },
+      { $new: true }
+    ).orFail(Exception.notFound("file not found"));
+
+    return file;
+  }
 }
 
 export default FileService;
