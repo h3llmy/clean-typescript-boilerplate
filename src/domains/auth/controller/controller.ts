@@ -118,7 +118,7 @@ class AuthController {
         _id: user._id,
         type: "login",
       } as IAuthToken,
-      "30s"
+      "30d"
     );
 
     const refreshToken = AuthToken.encodeRefresh(

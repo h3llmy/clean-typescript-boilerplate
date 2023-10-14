@@ -14,16 +14,15 @@ class UserRoute extends Route {
 
   protected initializeRoutes() {
     this.get("/", this.permission("authenticated"), this.controller.detail);
+
     this.put("/", this.permission("authenticated"), this.controller.update);
+
     this.get(
       "/list",
       this.validator.list(),
-      // this.permission("admin"),
+      this.permission("admin"),
       this.controller.list
     );
-    this.post("/test", (req: IRequest, res: IResponse) => {
-      res.json(req.body);
-    });
   }
 }
 

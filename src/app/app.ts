@@ -87,7 +87,12 @@ class App {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
     this.app.use(compression());
-    this.app.use(fileUpload());
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/",
+      })
+    );
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
       res.view = async (component, data) => {
         res.send(await new RenderReact().toString(component, data));
