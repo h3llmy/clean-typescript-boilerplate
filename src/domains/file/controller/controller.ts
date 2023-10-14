@@ -29,16 +29,16 @@ class FileController {
     switch (fileCheck.status) {
       case "onlyShared":
         if (
-          String(fileCheck.ownerId) !== String(user._id) ||
+          String(fileCheck.ownerId) !== String(user?._id) ||
           !fileCheck.sharedUser
             .map((userAccess) => String(userAccess))
-            .includes(String(user._id))
+            .includes(String(user?._id))
         ) {
           throw Exception.forbidden();
         }
         break;
       case "private":
-        if (!user || String(fileCheck.ownerId) !== String(user._id)) {
+        if (!user || String(fileCheck.ownerId) !== String(user?._id)) {
           throw Exception.forbidden();
         }
         break;

@@ -20,14 +20,18 @@ class FileRoute extends Route {
       this.validator.create(),
       this.controller.create
     );
+
     this.get("/", this.permission("authenticated"), this.controller.list);
+
     this.get("/:mimeType/:fileName", this.controller.getFIle);
+
     this.put(
       "/update-shared-user/:fileId",
       this.permission("authenticated"),
       this.validator.updateSharedUser(),
       this.controller.updateSharedUser
     );
+
     this.put(
       "/update-status/:id",
       this.permission("authenticated"),

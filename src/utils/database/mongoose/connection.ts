@@ -7,6 +7,7 @@ class ConnectMongoDB {
       await mongoose.connect(env("MONGO_URI"), {
         useUnifiedTopology: true,
         useNewUrlParser: true,
+        tls: true,
       } as ConnectOptions);
 
       console.log(
