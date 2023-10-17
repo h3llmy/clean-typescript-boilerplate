@@ -1,6 +1,9 @@
 import * as crypto from "crypto";
 
 class Random {
+  /**
+   * random the string
+   */
   public stringNumber = (length: number = 6): string => {
     const max = Math.pow(10, length);
     const randomNumber =
@@ -12,6 +15,9 @@ class Random {
     return randomNumber.toString().padStart(length, "0");
   };
 
+  /**
+   * random the lowercase string only
+   */
   public lowercaseString = (length: number = 6): string => {
     const characters = "abcdefghijklmnopqrstuvwxyz";
     let randomString = "";
@@ -24,6 +30,9 @@ class Random {
     return randomString;
   };
 
+  /**
+   * random the upercase string only
+   */
   public uppercaseString = (length: number = 6): string => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let randomString = "";
@@ -36,6 +45,9 @@ class Random {
     return randomString;
   };
 
+  /**
+   * random everything has symbol, uppercase, lowercase and number
+   */
   public random = (length: number = 10): string => {
     const characters =
       "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+[]{}|;:,.<>?";
@@ -51,6 +63,9 @@ class Random {
     return randomString;
   };
 
+  /**
+   * random number
+   */
   public number = (length: number = 6): number => {
     const min = Math.pow(10, length - 1);
     const max = Math.pow(10, length);

@@ -3,6 +3,9 @@ import Users from "../domains/users/model/model";
 import { IAuthToken } from "domains/auth/interface/interface";
 
 class AuthMiddleware {
+  /**
+   * initialize the auth request
+   */
   static async auth(req: IRequest, res: IResponse, next: INext) {
     try {
       const authorization = req.headers.authorization;

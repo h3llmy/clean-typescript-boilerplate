@@ -28,16 +28,25 @@ class Mail {
     };
   }
 
+  /**
+   * set email reciver
+   */
   public to(email: string | string[]): this {
     this.emailOptions.to = email;
     return this;
   }
 
+  /**
+   * set email subject
+   */
   public subject(subject: string): this {
     this.emailOptions.subject = subject;
     return this;
   }
 
+  /**
+   * send html email body
+   */
   public async html(
     component: React.ComponentType<any>,
     data?: object
@@ -55,11 +64,17 @@ class Mail {
     }
   }
 
+  /**
+   * set email text body
+   */
   public text(text: string): Promise<boolean> {
     this.emailOptions.text = text;
     return this.send();
   }
 
+  /**
+   * send the email
+   */
   private async send(): Promise<boolean> {
     try {
       if (Array.isArray(this.emailOptions.to)) {

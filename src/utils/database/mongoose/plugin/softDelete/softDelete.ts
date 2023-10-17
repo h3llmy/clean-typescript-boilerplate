@@ -14,29 +14,7 @@ export default function softDeletePlugin(schema: mongoose.Schema) {
   });
 
   schema.pre(
-    "find",
-    async function (this, next: (err?: CallbackError) => void) {
-      if (this.getFilter().isDeleted === true) {
-        return next();
-      }
-      this.setQuery({ ...this.getFilter(), isDeleted: { $ne: true } });
-      next();
-    }
-  );
-
-  schema.pre(
-    "count",
-    async function (this, next: (err?: CallbackError) => void) {
-      if (this.getFilter().isDeleted === true) {
-        return next();
-      }
-      this.setQuery({ ...this.getFilter(), isDeleted: { $ne: true } });
-      next();
-    }
-  );
-
-  schema.pre(
-    "countDocuments",
+    ["find", "countDocuments", "count"],
     async function (this, next: (err?: CallbackError) => void) {
       if (this.getFilter().isDeleted === true) {
         return next();

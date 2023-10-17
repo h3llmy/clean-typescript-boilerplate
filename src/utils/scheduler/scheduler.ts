@@ -13,10 +13,18 @@ class Scheduler {
   private cronExpression: string | null;
   private name: string;
 
+  /**
+   * create scheduler task to running in background
+   */
   constructor(name: string) {
     this.name = name;
   }
 
+  /**
+   * run the scheduler every seted time
+   *
+   * the scheduler will running every seted time
+   */
   public every({ second, minute, hour, day, month, week }: ISchedulerTimer) {
     this.cronExpression = `${second > 0 ? `*/${second}` : "*"} ${
       minute > 0 ? `*/${minute}` : "*"
@@ -26,6 +34,11 @@ class Scheduler {
     return this;
   }
 
+  /**
+   * run scheduler by seted time
+   *
+   * the scheduler will runing every the time reach the seted time
+   */
   public scedule({ second, minute, hour, day, month, week }: ISchedulerTimer) {
     this.cronExpression = `${second > 0 ? second : "*"} ${
       minute > 0 ? minute : "*"
@@ -35,6 +48,9 @@ class Scheduler {
     return this;
   }
 
+  /**
+   * set the function to run when the time fulfil
+   */
   public run(action: () => void) {
     if (!this.cronExpression) {
       throw new Error("You must call 'every' or 'scedule' before scheduling.");

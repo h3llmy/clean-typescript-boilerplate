@@ -1,6 +1,9 @@
 import * as jwt from "jsonwebtoken";
 
 class AuthToken {
+  /**
+   * generate token for access token
+   */
   static encode = (
     payload: string | object | Buffer,
     expiresIn: string,
@@ -18,6 +21,9 @@ class AuthToken {
     }
   };
 
+  /**
+   * decode token for access token
+   */
   static decode = (payload: string): string | jwt.JwtPayload => {
     try {
       return jwt.verify(payload, env("ACCESS_TOKEN_SECRET"));
@@ -26,6 +32,9 @@ class AuthToken {
     }
   };
 
+  /**
+   * generate token for refresh token
+   */
   static encodeRefresh = (
     payload: string | object | Buffer,
     expiresIn: string,
@@ -43,6 +52,9 @@ class AuthToken {
     }
   };
 
+  /**
+   * decode token for refresh token
+   */
   static decodeRefresh = (payload: string): string | jwt.JwtPayload => {
     try {
       return jwt.verify(payload, env("REFRESH_TOKEN_SECRET"));

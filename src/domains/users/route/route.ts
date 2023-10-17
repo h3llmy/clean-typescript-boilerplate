@@ -19,8 +19,8 @@ class UserRoute extends Route {
 
     this.get(
       "/list",
-      this.validator.list(),
       this.permission("admin"),
+      this.validator.list(),
       this.controller.list
     );
   }

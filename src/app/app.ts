@@ -13,6 +13,9 @@ import RenderReact from "../utils/viewEngine/reactToString";
 class App {
   private app: express.Application;
 
+  /**
+   * initialize all the avilable route route
+   */
   constructor(routes?: IRouter[]) {
     this.app = express();
     this.corsOrigin();
@@ -23,15 +26,24 @@ class App {
     this.listen();
   }
 
+  /**
+   * get the webserver app
+   */
   public getServer() {
     return this.app;
   }
 
+  /**
+   * initialize the app listening port
+   */
   private listen() {
     const port = parseInt(env("port", 3000));
     this.startServer(port);
   }
 
+  /**
+   * start the webserver
+   */
   private startServer(port: number) {
     this.app
       .listen(port, () => {
@@ -54,6 +66,9 @@ class App {
       });
   }
 
+  /**
+   * set the cors origin or white list of url/ip who can access the service
+   */
   private corsOrigin() {
     let appOrigin: string | string[] = env("CORS_ORIGIN");
     if (appOrigin) {
@@ -83,6 +98,9 @@ class App {
     );
   }
 
+  /**
+   * initialize the middleware
+   */
   private initializeMiddlewares() {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
@@ -116,6 +134,9 @@ class App {
     this.app.use(middlewares);
   }
 
+  /**
+   * initialize the controller
+   */
   private initializeControllers(routes: IRouter[]) {
     routes?.forEach((route) => {
       this.app.use(
@@ -130,10 +151,16 @@ class App {
     });
   }
 
+  /**
+   * hanndle the error request
+   */
   private initializeErrorHandling() {
     this.app.use(ErrorHandler.handler);
   }
 
+  /**
+   * create connection to database
+   */
   private async connectDb() {
     await ConnectMongoDB.createConnection();
   }

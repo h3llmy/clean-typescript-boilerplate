@@ -1,13 +1,15 @@
 import mongoose, { ConnectOptions } from "mongoose";
 
 class ConnectMongoDB {
+  /**
+   * create mongo db connection
+   */
   static async createConnection() {
     try {
       mongoose.set("strictQuery", false);
       await mongoose.connect(env("MONGO_URI"), {
         useUnifiedTopology: true,
         useNewUrlParser: true,
-        tls: true,
       } as ConnectOptions);
 
       console.log(
