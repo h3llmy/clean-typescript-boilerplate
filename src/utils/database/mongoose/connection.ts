@@ -1,4 +1,4 @@
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 
 class ConnectMongoDB {
   /**
@@ -7,10 +7,7 @@ class ConnectMongoDB {
   static async createConnection() {
     try {
       mongoose.set("strictQuery", false);
-      await mongoose.connect(env("MONGO_URI"), {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-      } as ConnectOptions);
+      await mongoose.connect(env("MONGO_URI"));
 
       console.log(
         "\x1b[34m%s\x1b[0m",

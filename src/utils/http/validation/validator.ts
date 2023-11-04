@@ -32,10 +32,17 @@ class Validator {
   static isNumber = (value: any): boolean =>
     value === undefined || value === null || !Number.isNaN(parseInt(value));
 
-  static isBoolean = (value: any): boolean =>
-    value === undefined ||
-    value === null ||
-    typeof Boolean(value) === "boolean";
+  static isBoolean = (value: any): boolean => {
+    try {
+      return (
+        value === undefined ||
+        value === null ||
+        typeof JSON.parse(value) === "boolean"
+      );
+    } catch (error) {
+      return false;
+    }
+  };
 
   static isArray = (value: any): boolean =>
     value === undefined || value === null || Array.isArray(value);

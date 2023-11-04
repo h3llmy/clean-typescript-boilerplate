@@ -1,4 +1,4 @@
-import UserService from "../../users/service/service";
+import UserService from "../service/users.service";
 
 class UserController {
   public async detail(req: IRequest, res: IResponse) {

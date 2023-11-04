@@ -8,7 +8,7 @@ import {
 import "./env/env";
 import "./asset/asset";
 import "./httpError/httpError";
-import IUsers from "../../domains/users/interface/interface";
+import IUsers from "../../domains/users/interface/users.interface";
 import { UploadedFile } from "express-fileupload";
 import * as React from "react";
 
@@ -25,9 +25,11 @@ declare global {
    */
   function env(name: string, optionalValue?: any): string;
   function asset(path: string): string;
-  interface IRequest extends Request {
+  interface IRequest<B = any, F extends string = string> extends Request {
     user: IUsers;
-    files?: { [formField: string]: IUploadedFile | IUploadedFile[] };
+    // files?: { [formField: F]: IUploadedFile | IUploadedFile[] };
+    files?: Record<F, IUploadedFile | IUploadedFile[]>;
+    body: B;
   }
   interface IUploadedFile extends UploadedFile {
     filePath: string;

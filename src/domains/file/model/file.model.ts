@@ -1,6 +1,6 @@
-import Users from "../../users/model/model";
+import Users from "../../users/model/users.model";
 import { Schema, model } from "mongoose";
-import IFile from "../interface/interface";
+import IFile from "../interface/file.interface";
 import { ISoftDeleteModel } from "utils/database/mongoose/plugin/softDelete/softDeleteModel";
 
 const fileSchema = new Schema<IFile>(

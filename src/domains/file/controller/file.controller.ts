@@ -1,10 +1,11 @@
 import { ObjectId } from "mongoose";
-import IFile from "../interface/interface";
-import FileService from "../service/service";
-import UserService from "../../../domains/users/service/service";
+import IFile from "../interface/file.interface";
+import FileService from "../service/file.service";
+import UserService from "../../users/service/users.service";
+import ICreate from "../dto/createFile.dto";
 
 class FileController {
-  public async create(req: IRequest, res: IResponse) {
+  public async create(req: IRequest<ICreate>, res: IResponse) {
     const { files } = req.files;
     const { user } = req;
     const { sharedUser, status } = req.body;

@@ -3,8 +3,8 @@ import Random from "../../../services/random/random";
 import AuthToken from "../../../services/authToken/jwt";
 import RegistrationOtp from "../mail/registrationOtp";
 import ResetPassword from "../mail/resetPassword";
-import { IAuthToken } from "../interface/interface";
-import UserService from "../../users/service/service";
+import { IAuthToken } from "../interface/auth.interface";
+import UserService from "../../users/service/users.service";
 
 class AuthController {
   public async register(req: IRequest, res: IResponse) {

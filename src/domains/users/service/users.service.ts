@@ -1,6 +1,6 @@
 import { FilterQuery, ObjectId } from "mongoose";
-import IUsers from "../interface/interface";
-import Users from "../model/model";
+import IUsers from "../interface/users.interface";
+import Users from "../model/users.model";
 
 class UserService {
   static async create(userPayload: Partial<IUsers>) {

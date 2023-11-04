@@ -1,6 +1,6 @@
 import Route from "../../../utils/http/route/route";
-import FileController from "../controller/controller";
-import FileValidator from "../validator/validator";
+import FileController from "../controller/file.controller";
+import FileValidator from "../validator/file.validator";
 
 class FileRoute extends Route {
   private controller = new FileController();

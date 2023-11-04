@@ -1,6 +1,6 @@
 import AuthToken from "../services/authToken/jwt";
-import Users from "../domains/users/model/model";
-import { IAuthToken } from "domains/auth/interface/interface";
+import Users from "../domains/users/model/users.model";
+import { IAuthToken } from "domains/auth/interface/auth.interface";
 
 class AuthMiddleware {
   /**

@@ -1,6 +1,6 @@
-import UserController from "../controller/controller";
+import UserController from "../controller/users.controller";
 import Route from "../../../utils/http/route/route";
-import UserValidator from "../validator/validator";
+import UserValidator from "../validator/users.validator";
 
 class UserRoute extends Route {
   protected controller = new UserController();

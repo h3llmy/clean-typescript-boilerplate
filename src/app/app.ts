@@ -113,7 +113,10 @@ class App {
     );
     this.app.use((req: IRequest, res: IResponse, next: INext) => {
       res.view = async (component, data) => {
-        res.send(await new RenderReact().toString(component, data));
+        res.set("Content-Type", "text/html");
+        res.set("Cache-Control", "public, max-age=3600");
+        const responseHtml = await new RenderReact().toString(component, data);
+        res.send(responseHtml);
       };
       next();
     });
@@ -156,6 +159,9 @@ class App {
    */
   private initializeErrorHandling() {
     this.app.use(ErrorHandler.handler);
+    process.on("uncaughtException", (err) => {
+      console.error(err);
+    });
   }
 
   /**

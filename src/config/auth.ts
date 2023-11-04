@@ -1,4 +1,4 @@
-import IUsers from "domains/users/interface/interface";
+import IUsers from "domains/users/interface/users.interface";
 
 interface IAuthConfig {
   permissionField: keyof IUsers;

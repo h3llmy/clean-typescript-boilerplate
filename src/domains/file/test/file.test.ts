@@ -1,8 +1,8 @@
-import FileService from "../service/service";
-import IFile from "../interface/interface";
+import FileService from "../service/file.service";
+import IFile from "../interface/file.interface";
 import MemoryDB from "../../../utils/database/mongoose/memoryDB";
-import UserService from "../../users/service/service";
-import IUsers from "../../users/interface/interface";
+import UserService from "../../users/service/users.service";
+import IUsers from "../../users/interface/users.interface";
 
 let user: IUsers;
 let file: IFile;

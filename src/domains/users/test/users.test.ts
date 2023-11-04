@@ -1,5 +1,5 @@
-import UserService from "../service/service";
-import IUsers from "../interface/interface";
+import UserService from "../service/users.service";
+import IUsers from "../interface/users.interface";
 import MemoryDB from "../../../utils/database/mongoose/memoryDB";
 
 beforeAll(async () => {

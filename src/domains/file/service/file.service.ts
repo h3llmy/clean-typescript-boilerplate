@@ -1,6 +1,6 @@
 import { ObjectId } from "mongoose";
-import IFile, { FileStatus } from "../interface/interface";
-import File from "../model/model";
+import IFile, { FileStatus } from "../interface/file.interface";
+import File from "../model/file.model";
 import fileDirectory from "../../../config/fileDirectory";
 import * as fs from "fs";
 import * as path from "path";
