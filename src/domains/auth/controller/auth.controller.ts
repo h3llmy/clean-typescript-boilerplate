@@ -99,7 +99,23 @@ class AuthController {
 
     await UserService.updateVerified(user);
 
-    res.json({ message: "account sucsses to verifid" });
+    const accessToken = AuthToken.encode(
+      {
+        _id: user._id,
+        type: "login",
+      } as IAuthToken,
+      "30d"
+    );
+
+    const refreshToken = AuthToken.encodeRefresh(
+      {
+        _id: user._id,
+        type: "login",
+      } as IAuthToken,
+      "30d"
+    );
+
+    res.json({ accessToken, refreshToken });
   }
 
   public async login(req: IRequest, res: IResponse) {

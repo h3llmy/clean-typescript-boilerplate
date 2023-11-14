@@ -1,4 +1,5 @@
 import FileValidateChain from "./fileValidatorChain";
+import IErrorValidation from "./validationError.interface";
 import ValidateChain from "./validatorChain";
 
 class Validation {
@@ -20,19 +21,21 @@ class Validation {
 
   public validate = (
     validators: (ValidateChain | FileValidateChain)[],
-    options: { returnOnlyValidated: boolean } = { returnOnlyValidated: true }
+    options: { whiteList: boolean } = { whiteList: true }
   ): IRequestHandler => {
     return (req: IRequest, res: IResponse, next: INext) => {
-      const errors: object = {
+      const errors: IErrorValidation = {
         body: {},
         query: {},
         files: {},
+        headers: {},
       };
 
-      const validateField: Record<string, any> = {
+      const validateField: IErrorValidation = {
         body: {},
         query: {},
         files: {},
+        headers: {},
       };
 
       validators.forEach((validator: ValidateChain | FileValidateChain) => {
@@ -58,10 +61,11 @@ class Validation {
         throw Exception.unprocessableEntity("error validation", errors);
       }
 
-      if (options.returnOnlyValidated) {
+      if (options.whiteList) {
         req.body = validateField.body;
         req.query = validateField.query;
         req.files = validateField.files;
+        req.headers = validateField.headers;
       }
 
       next();

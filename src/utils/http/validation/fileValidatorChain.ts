@@ -9,7 +9,6 @@ type MimeType =
   | "image/jpeg"
   | "image/png"
   | "image/gif"
-  | "image/svg+xml"
   | "audio/mpeg"
   | "audio/wav"
   | "video/mp4"
@@ -62,7 +61,7 @@ class FileValidateChain {
   public required = (): this => {
     this.rules.push({
       validator: Validator.required,
-      message: `${this.fieldName} is required`,
+      message: `${splitStringByUpercase(this.fieldName)} is required`,
     });
     return this;
   };
@@ -76,7 +75,9 @@ class FileValidateChain {
           return value?.size <= limit;
         }
       },
-      message: `${this.fieldName} must smaller than ${limit} kb`,
+      message: `${splitStringByUpercase(
+        this.fieldName
+      )} must smaller than ${limit} kb`,
     });
     return this;
   };
@@ -90,7 +91,9 @@ class FileValidateChain {
           return value?.size >= limit;
         }
       },
-      message: `${this.fieldName} must larger than ${limit} kb`,
+      message: `${splitStringByUpercase(
+        this.fieldName
+      )} must larger than ${limit} kb`,
     });
     return this;
   };
@@ -106,7 +109,7 @@ class FileValidateChain {
           return type.includes(value?.mimetype as MimeType);
         }
       },
-      message: `${this.fieldName} must be ${type}`,
+      message: `${splitStringByUpercase(this.fieldName)} must be ${type}`,
     });
     return this;
   };
@@ -126,7 +129,9 @@ class FileValidateChain {
           return false;
         }
       },
-      message: `${this.fieldName} must be maximum of ${maxLength} file`,
+      message: `${splitStringByUpercase(
+        this.fieldName
+      )} must be maximum of ${maxLength} file`,
     });
     return this;
   };

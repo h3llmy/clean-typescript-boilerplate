@@ -3,7 +3,7 @@ import Validation from "../../../utils/http/validation/validation";
 class AuthValidator extends Validation {
   public register() {
     return this.validate([
-      this.body("username").required().isString(),
+      this.body("username").required().isString().minLength(4),
       this.body("password").required().isString().minLength(8).maxLength(15),
       this.body("confirmPassword")
         .required()
@@ -20,7 +20,7 @@ class AuthValidator extends Validation {
 
   public login() {
     return this.validate([
-      this.body("username").required().isString(),
+      this.body("username").required().isString().minLength(4),
       this.body("password").required().isString().minLength(8).maxLength(15),
     ]);
   }

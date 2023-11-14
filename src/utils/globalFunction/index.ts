@@ -8,6 +8,7 @@ import {
 import "./env/env";
 import "./asset/asset";
 import "./httpError/httpError";
+import "./splitStringByUpeercase/splitStringByUpercase";
 import IUsers from "../../domains/users/interface/users.interface";
 import { UploadedFile } from "express-fileupload";
 import * as React from "react";
@@ -22,14 +23,37 @@ declare global {
    *
    * that will return port from .env or when not foud that will return 3000
    *
+   * @param name string
+   *
+   * @param optionalValue any
+   *
+   * @returns string
    */
   function env(name: string, optionalValue?: any): string;
+  /**
+   * get file full path based on env BASE_URL
+   *
+   * Example:
+   *
+   * asset(file) // that will return like http://localhost:3000/api/v1/file/example.jpg
+   *
+   * that will return full path of file url
+   *
+   * @param path string
+   *
+   * @returns string
+   */
   function asset(path: string): string;
-  interface IRequest<B = any, F extends string = string> extends Request {
+  function splitStringByUpercase(word: string): string;
+  interface IRequest<
+    Body = any,
+    File extends string = string,
+    Query extends string = string
+  > extends Request {
     user: IUsers;
-    // files?: { [formField: F]: IUploadedFile | IUploadedFile[] };
-    files?: Record<F, IUploadedFile | IUploadedFile[]>;
-    body: B;
+    files?: Record<File, IUploadedFile | IUploadedFile[]>;
+    body: Body;
+    query: Record<Query, string>;
   }
   interface IUploadedFile extends UploadedFile {
     filePath: string;

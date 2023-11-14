@@ -15,7 +15,7 @@ class ValidateChain {
   public required = (): this => {
     this.rules.push({
       validator: Validator.required,
-      message: `${this.fieldName} is required`,
+      message: `${splitStringByUpercase(this.fieldName)} is required`,
     });
     return this;
   };
@@ -29,7 +29,7 @@ class ValidateChain {
           return Validator.isString(value);
         }
       },
-      message: `${this.fieldName} must be a string`,
+      message: `${splitStringByUpercase(this.fieldName)} must be a string`,
     });
     return this;
   };
@@ -43,7 +43,9 @@ class ValidateChain {
           return Validator.isIdPhone(value);
         }
       },
-      message: `${this.fieldName} must be an id phone number`,
+      message: `${splitStringByUpercase(
+        this.fieldName
+      )} must be an id phone number`,
     });
     return this;
   };
@@ -57,7 +59,7 @@ class ValidateChain {
           return Validator.isNumber(value);
         }
       },
-      message: `${this.fieldName} must be a number`,
+      message: `${splitStringByUpercase(this.fieldName)} must be a number`,
     });
     return this;
   };
@@ -71,7 +73,7 @@ class ValidateChain {
           return Validator.isEmail(value);
         }
       },
-      message: `${this.fieldName} must be an email`,
+      message: `${splitStringByUpercase(this.fieldName)} must be an email`,
     });
     return this;
   };
@@ -85,7 +87,7 @@ class ValidateChain {
           return Validator.isUrl(value);
         }
       },
-      message: `${this.fieldName} must be an url`,
+      message: `${splitStringByUpercase(this.fieldName)} must be an url`,
     });
     return this;
   };
@@ -99,7 +101,7 @@ class ValidateChain {
           return Validator.isBoolean(value);
         }
       },
-      message: `${this.fieldName} must be an boolean`,
+      message: `${splitStringByUpercase(this.fieldName)} must be an boolean`,
     });
     return this;
   }
@@ -113,7 +115,7 @@ class ValidateChain {
           return isValidObjectId(value);
         }
       },
-      message: `${this.fieldName} must be an object id`,
+      message: `${splitStringByUpercase(this.fieldName)} must be an object id`,
     });
     return this;
   };
@@ -121,7 +123,7 @@ class ValidateChain {
   public isArray = (): this => {
     this.rules.push({
       validator: Validator.isArray,
-      message: `${this.fieldName} must be an array`,
+      message: `${splitStringByUpercase(this.fieldName)} must be an array`,
     });
     return this;
   };
@@ -129,7 +131,9 @@ class ValidateChain {
   public minLength = (length: number): this => {
     this.rules.push({
       validator: (value: any) => Validator.minLength(value, length),
-      message: `${this.fieldName} must be at least ${length} characters long`,
+      message: `${splitStringByUpercase(
+        this.fieldName
+      )} must be at least ${length} characters long`,
     });
     return this;
   };
@@ -140,7 +144,9 @@ class ValidateChain {
         value === undefined ||
         value === null ||
         Validator.maxLength(value, length),
-      message: `${this.fieldName} max ${length} characters long`,
+      message: `${splitStringByUpercase(
+        this.fieldName
+      )} max ${length} characters long`,
     });
     return this;
   };
@@ -148,7 +154,9 @@ class ValidateChain {
   public enum = (option: any[]): this => {
     this.rules.push({
       validator: (value: any) => option.includes(value),
-      message: `${this.fieldName} must be ${option.toString()}`,
+      message: `${splitStringByUpercase(
+        this.fieldName
+      )} must be ${option.toString()}`,
     });
     return this;
   };
@@ -157,7 +165,11 @@ class ValidateChain {
     this.rules.push({
       validator: (value: any) =>
         Boolean(String(value).toLowerCase().match(regex)),
-      message: message || `${this.fieldName} is not match with regex pattren`,
+      message:
+        message ||
+        `${splitStringByUpercase(
+          this.fieldName
+        )} is not match with regex pattren`,
     });
     return this;
   };

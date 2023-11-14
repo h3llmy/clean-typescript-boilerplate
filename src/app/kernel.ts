@@ -17,7 +17,7 @@ export const routeMiddlewares = {} satisfies Record<string, IRequestHandler>;
 
 // implement scheduler
 export const scheduler: Scheduler[] = [
-  // new Scheduler("delete trash").scedule({ second: 1 }).run(() => {
-  //   console.log("mantap");
+  // new Scheduler("delete trash").every({ second: 1 }).run(() => {
+  //   console.log(process.pid);
   // }),
 ];

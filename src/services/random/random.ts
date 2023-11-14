@@ -3,6 +3,10 @@ import * as crypto from "crypto";
 class Random {
   /**
    * random the string
+   *
+   * @param length number (default 6)
+   *
+   * @returns string
    */
   public stringNumber = (length: number = 6): string => {
     const max = Math.pow(10, length);
@@ -17,6 +21,10 @@ class Random {
 
   /**
    * random the lowercase string only
+   *
+   * @param length number (default 6)
+   *
+   * @returns string
    */
   public lowercaseString = (length: number = 6): string => {
     const characters = "abcdefghijklmnopqrstuvwxyz";
@@ -32,6 +40,10 @@ class Random {
 
   /**
    * random the upercase string only
+   *
+   * @param length number (default 6)
+   *
+   * @returns string
    */
   public uppercaseString = (length: number = 6): string => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -47,6 +59,10 @@ class Random {
 
   /**
    * random everything has symbol, uppercase, lowercase and number
+   *
+   * @param length number (default 6)
+   *
+   * @returns string
    */
   public random = (length: number = 10): string => {
     const characters =
@@ -65,6 +81,10 @@ class Random {
 
   /**
    * random number
+   *
+   * @param length number (default 6)
+   *
+   * @returns number
    */
   public number = (length: number = 6): number => {
     const min = Math.pow(10, length - 1);

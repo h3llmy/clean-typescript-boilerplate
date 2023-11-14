@@ -2,6 +2,9 @@ import * as nodemailer from "nodemailer";
 import * as React from "react";
 import RenderReact from "../../utils/viewEngine/reactToString";
 
+/**
+ * create new mail instance
+ */
 class Mail {
   private transporter: nodemailer.Transporter;
   private emailOptions: nodemailer.SendMailOptions;
@@ -30,6 +33,10 @@ class Mail {
 
   /**
    * set email reciver
+   *
+   * @param email string | string[] (email)
+   *
+   * @returns this
    */
   public to(email: string | string[]): this {
     this.emailOptions.to = email;
@@ -38,6 +45,10 @@ class Mail {
 
   /**
    * set email subject
+   *
+   * @param subject string
+   *
+   * @returns this
    */
   public subject(subject: string): this {
     this.emailOptions.subject = subject;
@@ -46,6 +57,12 @@ class Mail {
 
   /**
    * send html email body
+   *
+   * @param component ComponentType
+   *
+   * @param data object
+   *
+   * @returns void
    */
   public async html(
     component: React.ComponentType<any>,
@@ -66,6 +83,10 @@ class Mail {
 
   /**
    * set email text body
+   *
+   * @param text string
+   *
+   * @returns Promise boolean
    */
   public text(text: string): Promise<boolean> {
     this.emailOptions.text = text;
@@ -74,6 +95,8 @@ class Mail {
 
   /**
    * send the email
+   *
+   * @returns Promise boolean
    */
   private async send(): Promise<boolean> {
     try {

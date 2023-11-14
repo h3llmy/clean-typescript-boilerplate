@@ -112,9 +112,9 @@ class UserService {
   static async matchPassword(filter: FilterQuery<IUsers>, password: string) {
     const user = await Users.findOne(filter)
       .select("-otp")
-      .orFail(Exception.unauthorized("user not found"));
+      .orFail(Exception.unauthorized("Login Failed"));
     if (!user.matchPassword(password)) {
-      throw Exception.unauthorized();
+      throw Exception.unauthorized("Login Failed");
     }
     return user;
   }
